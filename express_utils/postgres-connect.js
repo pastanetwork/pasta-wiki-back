@@ -8,7 +8,7 @@ const pool = new Pool({
     host: postgres_values.host,
     port: postgres_values.port,
     database: postgres_values.database,
-    searchPath: ['public']
+    searchPath: ['articles']
 });
 
 const client = new Client({
@@ -17,7 +17,7 @@ const client = new Client({
     host: postgres_values.host,
     port: postgres_values.port,
     database: postgres_values.database,
-    searchPath: ['public']
+    searchPath: ['articles']
 });
 
 (async () => {
