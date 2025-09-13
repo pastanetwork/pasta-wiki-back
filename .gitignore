@@ -1,7 +1,55 @@
+#///// EXPRESS //////
+
 # NPM packages
 
-node_modules/
+express/node_modules/
 
 #Environnement variables
 
-.env
+express/.env
+
+#Tests files
+
+test/
+
+#///// NEXT JS /////
+
+# dependencies
+nextjs/node_modules/
+nextjs/.pnp
+nextjs/.pnp.*
+nextjs/.yarn/*
+nextjs/!.yarn/patches
+nextjs/!.yarn/plugins
+nextjs/!.yarn/releases
+nextjs/!.yarn/versions
+
+# testing
+nextjs/coverage
+
+# next.js
+nextjs/.next/
+nextjs/out/
+
+# production
+nextjs/build
+
+# misc
+nextjs/.DS_Store
+nextjs/*.pem
+
+# debug
+nextjs/npm-debug.log*
+nextjs/yarn-debug.log*
+nextjs/yarn-error.log*
+nextjs/.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+nextjs/.env
+
+# vercel
+nextjs/.vercel
+
+# typescript
+nextjs/*.tsbuildinfo
+nextjs/next-env.d.ts

@@ -10,10 +10,18 @@ app.listen(port, () => {
 	console.log(`Server is running on port ${port}.`);
 });
 
-const category_routes =require("./categories/routes/main");
+const category_routes = require("./categories/routes/main");
 
 app.use(`/${express_values.public_route}/categories`, category_routes);
 
-const articles_routes =require("./articles/routes/main");
+const articles_routes = require("./articles/routes/main");
 
 app.use(`/${express_values.public_route}/articles`, articles_routes);
+
+const users_routes = require("./users/routes/main");
+
+app.use(`/${express_values.public_route}/users`, users_routes);
+
+app.use((req, res) => {
+	res.status(418).end();
+});
