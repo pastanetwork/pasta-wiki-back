@@ -53,14 +53,14 @@ async function publishArticle(title, category, content, enabled){
     return {msg:"Article created successfully",code:201}
 }
 
-async function modifyArticle(title, category, content, enabled){
+async function modifyArticle(title, category, content, enabled, prev_title){
     const exist = verifyArticleDB(title,category);
     if (exist.code===500){return db_error;};
     if (exist.data===false){
         return {msg:`Error : Can't modify article. This article doesn't exist.`,code:404};
     }
 
-    const result_obj = updateArticle(title,category,content,enabled);
+    const result_obj = updateArticle(title,category,content,enabled, prev_title);
     if (result_obj.code===500){return db_error;}
     
     return {msg:"Article created successfully",code:201}

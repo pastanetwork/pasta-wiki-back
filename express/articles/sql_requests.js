@@ -39,14 +39,14 @@ async function createArticle(title, category, content, enabled){
     }
 }
 
-async function updateArticle(title, category, content, enabled) {
+async function updateArticle(title, category, content, enabled, prev_title) {
     const category_res_obj = await getCategoryIdFromName(category);
     if (category_res_obj.code===500){
         return {code:500, data: category_res_obj.data};
     }
-    const query = `UPDATE articles.articles SET article_name = $1, category_id = $2, content = $3, lang_id = $4, enabled = $5 WHERE article_ref = $6 `;
+    const query = `UPDATE articles.articles SET article_name = $1, category_id = $2, content = $3, lang_id = $4, enabled = $5, article_ref = $6 WHERE article_ref = $7 `;
     try {
-        await pool.query(query, [title, category_res_obj.data, content, category_res_obj.lang_id, enabled, URLize(title)]);
+        await pool.query(query, [title, category_res_obj.data, content, category_res_obj.lang_id, enabled, URLize(title), URLize(prev_title)]);
         return { code: 200, data: "Success" };
     } catch (error) {
         return { code: 500, data: error };
