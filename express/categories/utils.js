@@ -38,7 +38,8 @@ async function getCategories(lang="all"){
 }
 
 async function publishCategory(title, lang, enabled){
-    const exist = verifyCategoryDB(title, lang);
+    const exist = await verifyCategoryDB(title, lang);
+    console.log(exist)
     if (exist.code===500){return db_error;};
     if (exist.data===true){
         return {msg:`Error : Can't create category. A category with this title already exist.`,code:403};
@@ -51,7 +52,7 @@ async function publishCategory(title, lang, enabled){
 }
 
 async function modifyCategory(title, lang, enabled, prev_title){
-    const exist = verifyCategoryDB(title, lang);
+    const exist = await verifyCategoryDB(prev_title, lang);
     if (exist.code===500){return db_error;};
     if (exist.data===false){
         return {msg:`Error : Can't modify category. This category doesn't exist.`,code:404};
@@ -60,7 +61,7 @@ async function modifyCategory(title, lang, enabled, prev_title){
     const result_obj = updateCategory(title, lang, enabled, prev_title);
     if (result_obj.code===500){return db_error;}
     
-    return {msg:"Category created successfully",code:201}
+    return {msg:"Category modified successfully",code:201}
 }
 
 module.exports = { getCategories, publishCategory, modifyCategory };

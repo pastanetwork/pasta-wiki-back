@@ -16,9 +16,12 @@ async function verifyCategoryDB(title, lang) {
     if (lang_res_obj.code===500){
         return {code:500, data: lang_res_obj.data};
     }
+    if (lang_res_obj.code===404){
+        return {code:404, data: lang_res_obj.data};
+    }
     const query = "SELECT 1 FROM articles.categories WHERE category_ref = $1 AND lang_id = $2 LIMIT 1";
     try {
-        const result = await pool.query(query, [URLize(title),lang_res_obj.lang_id]);
+        const result = await pool.query(query, [URLize(title),lang_res_obj.data]);
         return {code:200, data: result.rowCount > 0};
     } catch (error) {
         return {code:500, data: error};
@@ -30,9 +33,12 @@ async function createCategory(title, lang, enabled){
     if (lang_res_obj.code===500){
         return {code:500, data: lang_res_obj.data};
     }
+    if (lang_res_obj.code===404){
+        return {code:404, data: lang_res_obj.data};
+    }
     const query = `INSERT INTO articles.categories (category_name, lang_id, enabled, category_ref) VALUES ($1, $2, $3, $4)`;
     try {
-        await pool.query(query, [title, lang_res_obj.data.lang_id, enabled, URLize(title)]);
+        await pool.query(query, [title, lang_res_obj.data, enabled, URLize(title)]);
         return { code: 200, data: "Success" };
     } catch (error) {
         return { code: 500, data: error };
@@ -44,9 +50,12 @@ async function updateCategory(title, lang, enabled, prev_title) {
     if (lang_res_obj.code===500){
         return {code:500, data: lang_res_obj.data};
     }
+    if (lang_res_obj.code===404){
+        return {code:404, data: lang_res_obj.data};
+    }
     const query = `UPDATE articles.categories SET category_name = $1, lang_id = $2, enabled = $3, category_ref = $4 WHERE category_ref = $5 `;
     try {
-        await pool.query(query, [title, lang_res_obj.data.lang_id, enabled, URLize(title), URLize(prev_title)]);
+        await pool.query(query, [title, lang_res_obj.data, enabled, URLize(title), URLize(prev_title)]);
         return { code: 200, data: "Success" };
     } catch (error) {
         return { code: 500, data: error };
@@ -62,7 +71,7 @@ async function getLangIdFromName(lang) {
         }
         return { code: 200, data: result.rows[0].lang_id };
     } catch (error) {
-        return { code: 500, data: error.message || error };
+        return { code: 500, data: error };
     }
 }
 
