@@ -1,6 +1,7 @@
-const { getAllArticles } = require("./sql_requests")
-
+const { getAllArticles, verifyArticleDB, createArticle } = require("./sql_requests")
 const { URLize } = require("../express_utils/utils");
+
+const db_error = {msg:`Error : Something went wrong with the database`,code:500};
 
 async function getArticles(lang="all"){
     let select_lang=false;
@@ -39,4 +40,18 @@ async function getArticles(lang="all"){
     return {msg:result,code:200};
 }
 
-module.exports = { getArticles }
+async function publishArticle(title, category, content, enabled){
+    const exist = verifyArticleDB(title,category);
+    if (exist.code===500){return db_error;};
+
+    const result_obj = createArticle(title,category,content,enabled);
+    if (result_obj.code===500){return db_error;}
+    
+    return {msg:"Article created successfully",code:201}
+}
+
+async function modifyArticle(title, category, content, enabled){
+
+}
+
+module.exports = { getArticles, publishArticle, modifyArticle }
