@@ -20,7 +20,7 @@ router.post("/publish", async (req,res)=>{
     res.status(res_log.code).json({data:res_log.msg});
 });
 
-router.post("/modify", async (req,res)=>{
+router.put("/modify", async (req,res)=>{
     const { title, lang, enabled, prev_title} = req.body;
     let res_log=await modifyCategory(title, lang, enabled, prev_title);
     res.status(res_log.code).json({data:res_log.msg});
