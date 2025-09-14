@@ -1,4 +1,4 @@
-const { getAllArticles, verifyArticleDB, createArticle } = require("./sql_requests")
+const { getAllArticles, verifyArticleDB, createArticle, updateArticle } = require("./sql_requests")
 const { URLize } = require("../express_utils/utils");
 
 const db_error = {msg:`Error : Something went wrong with the database`,code:500};
@@ -43,15 +43,27 @@ async function getArticles(lang="all"){
 async function publishArticle(title, category, content, enabled){
     const exist = verifyArticleDB(title,category);
     if (exist.code===500){return db_error;};
+    if (exist.data===true){
+        return {msg:`Error : Can't create article. An article with this title in this category already exist.`,code:403};
+    }
 
     const result_obj = createArticle(title,category,content,enabled);
     if (result_obj.code===500){return db_error;}
-    
+
     return {msg:"Article created successfully",code:201}
 }
 
 async function modifyArticle(title, category, content, enabled){
+    const exist = verifyArticleDB(title,category);
+    if (exist.code===500){return db_error;};
+    if (exist.data===false){
+        return {msg:`Error : Can't modify article. This article doesn't exist.`,code:404};
+    }
 
+    const result_obj = updateArticle(title,category,content,enabled);
+    if (result_obj.code===500){return db_error;}
+    
+    return {msg:"Article created successfully",code:201}
 }
 
 module.exports = { getArticles, publishArticle, modifyArticle }
