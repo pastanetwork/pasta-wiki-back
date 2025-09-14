@@ -61,7 +61,7 @@ async function modifyCategory(title, lang, enabled, prev_title){
     const result_obj = updateCategory(title, lang, enabled, prev_title);
     if (result_obj.code===500){return db_error;}
     
-    return {msg:"Category modified successfully",code:201}
+    return {msg:"Category modified successfully",code:200}
 }
 
 module.exports = { getCategories, publishCategory, modifyCategory };

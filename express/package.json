@@ -1,6 +1,6 @@
 {
   "name": "pasta-wiki-api",
-  "version": "1.0.2",
+  "version": "1.0.9",
   "description": "",
   "main": "server.js",
   "scripts": {
