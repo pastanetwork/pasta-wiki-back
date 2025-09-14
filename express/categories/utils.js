@@ -1,6 +1,7 @@
-const { getAllCategories } = require("./sql_requests")
-
+const { getAllCategories, verifyCategoryDB, createCategory, updateCategory  } = require("./sql_requests")
 const { URLize } = require("../express_utils/utils");
+
+const db_error = {msg:`Error : Something went wrong with the database`,code:500};
 
 async function getCategories(lang="all"){
     let select_lang=false;
@@ -10,7 +11,7 @@ async function getCategories(lang="all"){
 
     const categories = await getAllCategories();
     if (categories.code!==200){
-        return {msg:`Error : Something went wrong with the database`,code:500};
+        return db_error;
     }
 
     let request_result=[];
@@ -36,4 +37,30 @@ async function getCategories(lang="all"){
     return { msg:result,code:200 };
 }
 
-module.exports = { getCategories };
+async function publishCategory(title, lang, enabled){
+    const exist = verifyCategoryDB(title, lang);
+    if (exist.code===500){return db_error;};
+    if (exist.data===true){
+        return {msg:`Error : Can't create category. A category with this title already exist.`,code:403};
+    }
+
+    const result_obj = createCategory(title, lang, enabled);
+    if (result_obj.code===500){return db_error;}
+
+    return {msg:"Category created successfully",code:201}
+}
+
+async function modifyCategory(title, lang, enabled, prev_title){
+    const exist = verifyCategoryDB(title, lang);
+    if (exist.code===500){return db_error;};
+    if (exist.data===false){
+        return {msg:`Error : Can't modify category. This category doesn't exist.`,code:404};
+    }
+
+    const result_obj = updateCategory(title, lang, enabled, prev_title);
+    if (result_obj.code===500){return db_error;}
+    
+    return {msg:"Category created successfully",code:201}
+}
+
+module.exports = { getCategories, publishCategory, modifyCategory };
