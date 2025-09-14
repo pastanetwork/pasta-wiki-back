@@ -18,7 +18,7 @@ async function verifyArticleDB(title,category) {
     }
     const query = "SELECT 1 FROM articles.articles WHERE article_ref = $1 AND category_id = $2 LIMIT 1";
     try {
-        const result = await pool.query(query, [URLize(title),category_res_obj.category_id]);
+        const result = await pool.query(query, [URLize(title),category_res_obj.data.category_id]);
         return {code:200, data: result.rowCount > 0};
     } catch (error) {
         return {code:500, data: error};
@@ -32,7 +32,7 @@ async function createArticle(title, category, content, enabled){
     }
     const query = `INSERT INTO articles.articles (article_name, category_id, content, lang_id, enabled, article_ref) VALUES ($1, $2, $3, $4, $5, $6)`;
     try {
-        await pool.query(query, [title, category_res_obj.category_id, content, category_res_obj.lang_id, enabled, URLize(title)]);
+        await pool.query(query, [title, category_res_obj.data.category_id, content, category_res_obj.data.lang_id, enabled, URLize(title)]);
         return { code: 200, data: "Success" };
     } catch (error) {
         return { code: 500, data: error };
@@ -46,7 +46,7 @@ async function updateArticle(title, category, content, enabled, prev_title) {
     }
     const query = `UPDATE articles.articles SET article_name = $1, category_id = $2, content = $3, lang_id = $4, enabled = $5, article_ref = $6 WHERE article_ref = $7 `;
     try {
-        await pool.query(query, [title, category_res_obj.data, content, category_res_obj.lang_id, enabled, URLize(title), URLize(prev_title)]);
+        await pool.query(query, [title, category_res_obj.data.category_id, content, category_res_obj.data.lang_id, enabled, URLize(title), URLize(prev_title)]);
         return { code: 200, data: "Success" };
     } catch (error) {
         return { code: 500, data: error };

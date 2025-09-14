@@ -50,7 +50,7 @@ async function publishArticle(title, category, content, enabled){
     const result_obj = createArticle(title,category,content,enabled);
     if (result_obj.code===500){return db_error;}
 
-    return {msg:"Article created successfully",code:201}
+    return {msg:"Article created successfully",code:201};
 }
 
 async function modifyArticle(title, category, content, enabled, prev_title){
@@ -63,7 +63,7 @@ async function modifyArticle(title, category, content, enabled, prev_title){
     const result_obj = updateArticle(title,category,content,enabled, prev_title);
     if (result_obj.code===500){return db_error;}
     
-    return {msg:"Article created successfully",code:201}
+    return {msg:"Article created successfully",code:201};
 }
 
 module.exports = { getArticles, publishArticle, modifyArticle }

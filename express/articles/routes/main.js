@@ -18,14 +18,14 @@ router.post("/publish", async (req,res)=>{
     const { title, category, content, enabled} = req.body;
     let res_log=await publishArticle(title, category, content, enabled);
     res.status(res_log.code).json({data:res_log.msg});
-})
+});
 
 router.post("/modify", async (req,res)=>{
     const { title, category, content, enabled, prev_title} = req.body;
     let res_log=await modifyArticle(title, category, content, enabled, prev_title);
     res.status(res_log.code).json({data:res_log.msg});
 
-})
+});
 
 
 module.exports = router;
