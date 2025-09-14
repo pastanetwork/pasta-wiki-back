@@ -1,11 +1,11 @@
 {
-  "name": "pasta-wiki-backend",
-  "version": "1.0.1",
+  "name": "pasta-wiki-api",
+  "version": "1.0.2",
   "description": "",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "concurrently \"cd ../nextjs/ && npm run dev\" \"nodemon server.js\""
   },
   "keywords": [],
   "author": "",
