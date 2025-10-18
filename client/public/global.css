@@ -1,0 +1,23 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: sans-serif;
+    min-height: 100vh;
+}
+
+header{
+    height: 80px;
+    color: white;
+    background-color: black;
+    display: flex;
+    align-items: center;
+}
+
+#pasta-logo-header{
+    height: 50px;
+    width: 50px;
+}

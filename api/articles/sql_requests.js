@@ -1,5 +1,5 @@
-const { pool } = require('../express_utils/postgres-connect');
-const { URLize } = require("../express_utils/utils");
+const { pool } = require('../../express_utils/postgres-connect');
+const { URLize } = require("../../express_utils/utils");
 
 async function getAllArticles(){
     try {

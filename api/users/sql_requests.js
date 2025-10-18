@@ -1,4 +1,4 @@
-const { pool } = require('../express_utils/postgres-connect');
+const { pool } = require('../../express_utils/postgres-connect');
 const argon2 = require('argon2');
 
 async function verifyEmailDB(email) {
