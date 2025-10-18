@@ -5,13 +5,19 @@
 }
 
 body{
+    position: relative;
     font-family: sans-serif;
     min-height: 100vh;
+    max-width: 100vw;
+    background-color: rgb(20,20,20);
+    color: white;
+    background-image: url("/public/pasta_logo_bg.svg") ;
+    background-size: 1920px 1080px;
+    background-attachment: fixed;
 }
 
 header{
     height: 80px;
-    color: white;
     background-color: black;
     display: flex;
     align-items: center;
