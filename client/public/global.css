@@ -19,6 +19,14 @@ body{
 header{
     height: 80px;
     background-color: black;
+}
+
+header a{
+    color: white;
+    text-decoration: none;
+}
+
+.flex-al-it-center{
     display: flex;
     align-items: center;
 }
