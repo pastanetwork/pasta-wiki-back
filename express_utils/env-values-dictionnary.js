@@ -16,4 +16,8 @@ const postgres_values = {
     database : process.env.POSTGRES_DATABASE
 }
 
-module.exports = { express_values, postgres_values }
+const jwt_values = {
+    secret : process.env.JWT_SECRET
+}
+
+module.exports = { express_values, postgres_values, jwt_values }

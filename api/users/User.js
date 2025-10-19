@@ -1,10 +1,11 @@
 const argon2 = require('argon2');
+const jwt = require('jsonwebtoken');
 
 const { registerSchema } = require("./joi-schemas")
-const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt } = require("./sql_requests")
+const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, } = require("./sql_requests")
+const { jwt_values } = require("../../express_utils/env-values-dictionnary")
 
 const db_error = {msg:`Error : Something went wrong with the database`,code:500};
-
 
 class User {
     constructor(userdata = {}) {
@@ -12,8 +13,8 @@ class User {
         this.email = userdata.email || "";
         this.password = userdata.password || "";
         this.useragent = userdata.useragent || "";
-        this.ip = userdata.ip || "";
-        
+        this.ip = userdata.ip || "Internal";
+        this.user_id= userdata.user_id || "";
     }
 
     async register(){
@@ -31,10 +32,13 @@ class User {
             return {msg:`Error : Can't create account with ${this.email}. An account with this email already exist.`,code:403};
         }
         const result = await registerUserDB(this.username,this.email,await argon2.hash(this.password));
-        if (result.code===500){
-            return db_error;
+        if (result.code === 200){
+            this.user_id = result.user_id
+            return {msg:"User created successfully",code:201,data:{token:this.generateJWT()}}
         } else {
-            return {msg:"User created successfully",code:201}
+            if (result.code===500){
+                return db_error;
+            }
         }
     }
     
@@ -44,16 +48,22 @@ class User {
             return db_error;
         }
         if (email_exist_obj.data!==true){
-            return {msg:`Error : Can't login account with ${this.email}. No account with this email exist.`,code:404};
+            return {msg:`Invalid Credentials.`,code:401};
         }
     
         const result = await loginUserDB(this.email,this.password);
-        if (result.code===500){
-            await this.logConnexion("FAILED")
-            return db_error;
-        } else {
+        if (result.code === 200){
+            this.user_id = result.user_id
             await this.logConnexion("SUCCESS")
-            return {msg:"User logged in successfully",code:201}
+            return {msg:"User logged in successfully",code:200,data:{token:this.generateJWT()}}
+        } else {
+            await this.logConnexion("FAILED")
+            if (result.code===500){
+                return db_error
+            };
+            if (result.code === 401){
+                return {msg:`Invalid Credentials.`,code:401};
+            }
         }
     }
 
@@ -62,7 +72,34 @@ class User {
         if (email_exist_obj.code===500 || email_exist_obj.data===false ){
             return;
         }
-        await logLoginAttempt(this.email,this.useragent,this.ip,status);
+        await logLoginAttempt(this.email,this.useragent,this.ip,status,this.user_id);
+    }
+
+    generateJWT(){
+        const token = jwt.sign({user_id:this.user_id, email:this.email},jwt_values.secret,{expiresIn:'14d'});
+        return token
+    }
+
+    async checkUserPerms(perm_id){
+        const user_verif = await verifyUserEmailAndId(this.email,this.user_id);
+        if(user_verif.code !== 200){
+            return false;
+        }
+        const role_id_verif = await getUserRole(this.user_id);
+        if (role_id_verif.code!==200){
+            return false;
+        }
+        const perms_verif = await getRolePerms(role_id_verif.role_id);
+        if (perms_verif.code!==200){
+            return false;
+        }
+        let has_perm = false;
+        for (let i of perms_verif.perms){
+            if (i.perm_id === perm_id){
+                has_perm=true
+            }
+        }
+        return has_perm;
     }
 }
 
