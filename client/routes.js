@@ -3,7 +3,7 @@ const path = require("path");
 const express = require("express");
 const fs = require('fs');
 
-const {checkJWT, verifPerm} = require("./utils")
+const {checkJWT, verifPerm} = require("../express_utils/utils")
 
 const router = Router();
 
@@ -28,7 +28,8 @@ router.use('/connect', express.static(path.join(__dirname, 'connect')));
 const categories = [
     { name: 'dashboard', perm: 1 },
     { name: 'administration', perm: 2 },
-    { name: 'public', perm: 0 }
+    { name: 'public', perm: 0 },
+    { name: 'test', perm: 0 }
 ];
 
 const handleStaticRoute = (category) => {

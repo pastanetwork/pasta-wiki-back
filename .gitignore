@@ -10,4 +10,4 @@ node_modules/
 
 #Tests files
 
-test/
+client/test/

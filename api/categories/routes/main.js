@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 
-const { getCategories, publishCategory, modifyCategory } = require("../utils")
+const { getCategories, publishCategory, modifyCategory } = require("../utils");
+const { verifPerm } = require("../../../express_utils/utils");
 
 router.get("/all",async (req,res)=>{
     let res_log=await getCategories("all");
@@ -16,13 +17,32 @@ router.get("/lang/:lang",async (req,res)=>{
 
 router.post("/publish", async (req,res)=>{
     const { title, lang, enabled} = req.body;
+    const hasPermission = await verifPerm(req.cookies.authToken, 3);
+        if (!hasPermission) {
+            return res.status(401).end();
+        }
     let res_log=await publishCategory(title, lang, enabled);
     res.status(res_log.code).json({data:res_log.msg});
 });
 
 router.put("/modify", async (req,res)=>{
     const { title, lang, enabled, prev_title} = req.body;
+    const hasPermission = await verifPerm(req.cookies.authToken, 4);
+        if (!hasPermission) {
+            return res.status(401).end();
+        }
     let res_log=await modifyCategory(title, lang, enabled, prev_title);
+    res.status(res_log.code).json({data:res_log.msg});
+
+});
+
+router.put("/delete", async (req,res)=>{
+    const { title} = req.body;
+    const hasPermission = await verifPerm(req.cookies.authToken, 5);
+        if (!hasPermission) {
+            return res.status(401).end();
+        }
+    ///// SUPPPRESSION À IMPLÉMENTER let res_log=await modifyCategory(title, lang, enabled, prev_title);
     res.status(res_log.code).json({data:res_log.msg});
 
 });
