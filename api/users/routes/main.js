@@ -3,6 +3,7 @@ const { Router } = require("express");
 const router = Router();
 
 const User = require("../User")
+const { checkJWT } = require("../../../express_utils/utils")
 
 router.post("/register",async (req,res)=>{
 
@@ -53,6 +54,24 @@ router.post("/login",async (req,res)=>{
         });
     }
     res.status(res_log.code).json({data:res_log.msg});
+});
+
+router.get("/qrcode-2fa",async (req,res)=>{
+    const data = checkJWT(req.cookies.authToken);
+    if (!data.ok){
+        return res.status(401).end();
+    }
+    const userdata = {
+        email:data.user.email,
+        user_id:data.user.user_id
+    }
+    const user = new User(userdata);
+    const qrcode = await user.generateQRcode2FA();
+    if (!qrcode.ok){
+        return res.status(404).json({data:'404 Not found'}).end()
+    }
+    res.type("image/png");
+    res.send(qrcode.data);
 });
 
 

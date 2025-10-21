@@ -11,10 +11,10 @@ async function verifyEmailDB(email) {
     }
 }
 
-async function registerUserDB(username, email, password_h) {
-    const query = `INSERT INTO users.users (username, email, password) VALUES ($1, $2, $3) RETURNING user_id`;
+async function registerUserDB(username, email, password_h, secret_2fa) {
+    const query = `INSERT INTO users.users (username, email, password, key_2fa) VALUES ($1, $2, $3, $4) RETURNING user_id`;
     try {
-        await pool.query(query, [username, email, password_h]);
+        const result = await pool.query(query, [username, email, password_h, secret_2fa]);
         const user_id = result.rows[0].user_id;
         return { code: 200, data: 'Success', user_id:user_id};
     } catch (error) {
@@ -91,4 +91,19 @@ async function getRolePerms(role_id){
     }
 }
 
-module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, }
+async function getSecret2FA(user_id){
+    const query = "SELECT key_2fa FROM users.users WHERE user_id = $1";
+    try {
+        const result = await pool.query(query, [user_id]);
+        
+        if (result.rows.length > 0) {
+            return { code: 200, data: 'Success', key: result.rows[0].key_2fa};
+        } else {
+            return { code: 404, data: 'Not found' };
+        }
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
+
+module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA,}

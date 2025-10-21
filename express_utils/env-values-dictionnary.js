@@ -20,4 +20,8 @@ const jwt_values = {
     secret : process.env.JWT_SECRET
 }
 
-module.exports = { express_values, postgres_values, jwt_values }
+const encryption_values = {
+    key : process.env.ENCRYPT_2FA
+}
+
+module.exports = { express_values, postgres_values, jwt_values, encryption_values }

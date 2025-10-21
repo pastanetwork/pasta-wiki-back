@@ -1,10 +1,12 @@
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const twoFactor = require('node-2fa');
+var QRCode = require('qrcode')
 
-const { registerSchema } = require("./joi-schemas")
-const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, } = require("./sql_requests")
-const { jwt_values } = require("../../express_utils/env-values-dictionnary")
+const { registerSchema } = require("./joi-schemas");
+const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, } = require("./sql_requests");
+const { jwt_values } = require("../../express_utils/env-values-dictionnary");
+const { encrypt, decrypt} = require("../../express_utils/encryption");
 
 const db_error = {msg:`Error : Something went wrong with the database`,code:500};
 
@@ -32,7 +34,12 @@ class User {
         if (email_exist_obj.data===true){
             return {msg:`Error : Can't create account with ${this.email}. An account with this email already exist.`,code:403};
         }
-        const result = await registerUserDB(this.username,this.email,await argon2.hash(this.password));
+        const secret_2fa = this.generateSecret2FA()
+        const encrypted = encrypt(secret_2fa);
+        if (!encrypted.ok){
+             return {msg:`Error: A problem occured in 2FA secret encryption process.`,code:500};
+        }
+        const result = await registerUserDB(this.username,this.email,await argon2.hash(this.password),encrypted.key);
         if (result.code === 200){
             this.user_id = result.user_id
             return {msg:"User created successfully",code:201,data:{token:this.generateJWT()}}
@@ -109,6 +116,33 @@ class User {
             }
         }
         return has_perm;
+    }
+
+    generateSecret2FA(){
+        const secret = twoFactor.generateSecret({
+            name: 'Pastanetwork Wiki Manager',
+            account: this.email
+        });
+        return secret.secret
+    }
+
+    async generateQRcode2FA() {
+        const secret = await getSecret2FA(this.user_id);
+        if (secret.code!==200){
+            return {ok:false};
+        }
+        const decrypted = decrypt(secret.key);
+        if (!decrypted.ok){
+            return {ok:false};
+        }
+        const url = `otpauth://totp/Pastanetwork%20Wiki%20Editor%3A${this.email}?secret=${decrypted.key}&issuer=Pastanetwork%20Wiki%20Editor`;
+        try {
+            const qrCodeDataURL = await QRCode.toBuffer(url);
+            return {ok:true,data:qrCodeDataURL};
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
     }
 }
 
