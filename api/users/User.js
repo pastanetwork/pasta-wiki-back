@@ -1,5 +1,6 @@
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
+const twoFactor = require('node-2fa');
 
 const { registerSchema } = require("./joi-schemas")
 const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, } = require("./sql_requests")
@@ -81,6 +82,14 @@ class User {
     }
 
     async checkUserPerms(perm_id){
+    /// Retournes un booléen : 
+    /*
+    - Vérifie si les informations données sont cohérentes. -> sinon retournes false.
+    - Récupères l'id du rôle de l'utilisateur. -> si la requête échoue retournes false.
+    - Récupères les permissions du rôle. -> si la requête échoue retournes false.
+    - Véries parmis la liste des permissions du rôles si l'une des permission possède l'id perm_id. -> retournes false par défaut.
+    - Si il y a une correspondance. -> retournes true.
+    */
         const user_verif = await verifyUserEmailAndId(this.email,this.user_id);
         if(user_verif.code !== 200){
             return false;
