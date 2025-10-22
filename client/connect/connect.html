@@ -5,23 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Pastanetwork Wiki Backend</title>
     <link rel="stylesheet" href="/public/global.css">
+    <link rel="stylesheet" href="/connect/connect.css">
 </head>
 <body>
-    <header class="flex-al-it-center"></header>
-    <main>
-        <h2>Login</h2>
-        <fieldset>
-            <label for="email">Email</label><br/>
-            <input id="login-email" name="email" type="email" required/><br/>
-            <label for="password">Password</label><br/>
-            <input id="login-password" name="password" type="password" required/><br/>
-            <button id="login-send">Envoyer</button>
-            <p id="login-log"></p>
-            
-        </fieldset>
-    </main>
-    <footer></footer>
-    <script src="/public/global.js"></script>
-    <script src="/connect/connect.js"></script>
+	<header class="flex-al-it-center"></header>
+	<main>
+		<div id="connect-form">
+			<h2 id="connect-title" data-traduction="connect.login">Login</h2>
+			<fieldset>
+				
+				<label for="email" id="email-label" data-traduction="connect.input.email">Email</label><br/>
+				<input id="email" name="email" type="email" required/><br/>
+				
+				<label for="password" data-traduction="connect.input.password">Password</label><br/>
+				<input id="password" name="password" type="password" required/><br/>
+				
+				<label for="password-confirm" id="password-confirm-label" data-traduction="connect.input.confirm_password">Confirm password</label><br/>
+				<input id="password-confirm" name="password-confirm" type="password" required/><br/>
+				
+				<button id="connect-send" data-traduction="connect.input.send">Send</button>
+				
+				<p id="connect-log"></p>
+				
+			</fieldset>
+			<p data-traduction="connect.switch-to-register"></p>
+			<button data-traduction="connect.switch-to-register.link"></button>
+		</div>
+	</main>
+	<footer></footer>
+	<script src="/public/global.js"></script>
+	<script src="/connect/connect.js"></script>
 </body>
 </html>

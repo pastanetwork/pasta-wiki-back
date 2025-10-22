@@ -1,0 +1,12 @@
+{
+	"connect.input.confirm_password": "Confirmer le MDP",
+	"connect.input.email": "Email",
+	"connect.input.password": "Mot de passe",
+	"connect.input.send": "Envoyer",
+	"connect.login": "Se connecter",
+	"connect.register": "S'enregistrer",
+	"connect.switch-to-connect": "Vous avez déjà un compte ?",
+	"connect.switch-to-connect.link": "Se connecter",
+	"connect.switch-to-register": "Pas encore de compte ?",
+	"connect.switch-to-register.link": "S'enregistrer"
+}

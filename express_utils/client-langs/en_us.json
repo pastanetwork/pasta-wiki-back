@@ -1,0 +1,12 @@
+{
+	"connect.input.confirm_password": "Confirm password",
+	"connect.input.email": "Email",
+	"connect.input.password": "Password",
+	"connect.input.send": "Send",
+	"connect.login": "Login",
+	"connect.register": "Register",
+	"connect.switch-to-connect": "Already have an account ?",
+	"connect.switch-to-connect.link": "Login",
+	"connect.switch-to-register": "No account yet ?",
+	"connect.switch-to-register.link": "Register"
+}
