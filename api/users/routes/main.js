@@ -74,5 +74,36 @@ router.get("/qrcode-2fa",async (req,res)=>{
     res.send(qrcode.data);
 });
 
+router.post("/verify-code-2fa", async (req,res)=>{
+    const useragent = req.headers["user-agent"];
+    const ip = req.headers["x-forwarded-for"];
+    const code = req.body.code;
+
+    const data = checkJWT(req.cookies.authToken);
+
+    if (!data.ok){
+        return res.status(401).end();
+    }
+    const userdata = {
+        email:data.user.email,
+        user_id:data.user.user_id,
+        session_id:data.user.session_id,
+        useragent:useragent,
+        ip:ip,
+    }
+    const user = new User(userdata);
+    const valid = await user.verify2FACode(code);
+    if (!valid.ok){
+        return res.status(401).json({data:"Code not valid"}).end();
+    }
+    const token = user.generateJWT();
+    res.cookie('authToken', token, {
+        httpOnly: true,
+        secure : true,
+        sameSite : 'strict',
+        maxAge : 14 * 24 * 60 * 60 * 1000
+    });
+    return res.status(200).json({data:"OK"}).end();
+});
 
 module.exports = router;

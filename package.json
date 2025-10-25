@@ -1,6 +1,6 @@
 {
   "name": "pasta-wiki-api",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -25,6 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "node-2fa": "^2.0.3",
     "pg": "^8.16.3",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "uuid": "^13.0.0"
   }
 }

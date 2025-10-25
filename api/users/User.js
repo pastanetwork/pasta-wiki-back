@@ -1,10 +1,11 @@
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
-const twoFactor = require('node-2fa');
-var QRCode = require('qrcode')
+const twofactor = require('node-2fa');
+const QRCode = require('qrcode');
+const { v4: uuidv4 } = require('uuid');
 
 const { registerSchema } = require("./joi-schemas");
-const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, } = require("./sql_requests");
+const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, setApprovedDB, } = require("./sql_requests");
 const { jwt_values } = require("../../express_utils/env-values-dictionnary");
 const { encrypt, decrypt} = require("../../express_utils/encryption");
 
@@ -18,6 +19,8 @@ class User {
         this.useragent = userdata.useragent || "";
         this.ip = userdata.ip || "Internal";
         this.user_id= userdata.user_id || "";
+        this.session_id = userdata.session_id || uuidv4();
+        this.verified_2fa = userdata.verified_2fa || false;
     }
 
     async register(){
@@ -41,7 +44,8 @@ class User {
         }
         const result = await registerUserDB(this.username,this.email,await argon2.hash(this.password),encrypted.key);
         if (result.code === 200){
-            this.user_id = result.user_id
+            this.user_id = result.user_id;
+            await this.logConnexion("SUCCESS")
             return {msg:"User created successfully",code:201,data:{token:this.generateJWT()}}
         } else {
             if (result.code===500){
@@ -61,7 +65,7 @@ class User {
     
         const result = await loginUserDB(this.email,this.password);
         if (result.code === 200){
-            this.user_id = result.user_id
+            this.user_id = result.user_id;
             await this.logConnexion("SUCCESS")
             return {msg:"User logged in successfully",code:200,data:{token:this.generateJWT()}}
         } else {
@@ -80,11 +84,11 @@ class User {
         if (email_exist_obj.code===500 || email_exist_obj.data===false ){
             return;
         }
-        await logLoginAttempt(this.email,this.useragent,this.ip,status,this.user_id);
+        await logLoginAttempt(this.email,this.useragent,this.ip,status,this.user_id,this.session_id);
     }
 
     generateJWT(){
-        const token = jwt.sign({user_id:this.user_id, email:this.email},jwt_values.secret,{expiresIn:'14d'});
+        const token = jwt.sign({user_id:this.user_id, email:this.email, session_id:this.session_id,ip:this.ip,verified_2fa:this.verified_2fa},jwt_values.secret,{expiresIn:'14d'});
         return token
     }
 
@@ -119,7 +123,7 @@ class User {
     }
 
     generateSecret2FA(){
-        const secret = twoFactor.generateSecret({
+        const secret = twofactor.generateSecret({
             name: 'Pastanetwork Wiki Manager',
             account: this.email
         });
@@ -142,6 +146,58 @@ class User {
         } catch (err) {
             console.error(err);
             throw err;
+        }
+    }
+
+    async setDefinitive(){
+        const result = await setDefinitiveDB(this.user_id);
+        if (result.code === 200){
+            return {ok:true}
+        } else {
+            if (result.code === 404){
+                return {ok:false,error:"User not found"}
+            }
+            if (result.code === 500){
+                return {ok:false,error:db_error}
+            }
+
+        }
+    }
+
+    async setApproved(status=false){
+    /// Prends en entrée un booléen.
+    /*
+    
+    */
+        const result = await setApprovedDB(this.user_id,status);
+        if (result.code === 200){
+            return {ok:true}
+        } else {
+            if (result.code === 404){
+                return {ok:false,error:"User not found"}
+            }
+            if (result.code === 500){
+                return {ok:false,error:db_error}
+            }
+
+        }
+    }
+
+    async verify2FACode(code){
+        const secret = await getSecret2FA(this.user_id);
+        if (secret.code!==200){
+            return {ok:false};
+        }
+        const result = twofactor.verifyToken(decrypt(secret.key).key, code);
+        if (!result){
+            return {ok:false}
+        }
+        if (result.delta>=0){
+            this.verified_2fa=true
+            setDefinitiveDB(this.user_id);
+            return {ok:true}
+        } else {
+            return {ok:false}
         }
     }
 }

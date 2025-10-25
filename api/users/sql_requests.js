@@ -38,10 +38,10 @@ async function loginUserDB(email, password) {
     }
 }
 
-async function logLoginAttempt(email,useragent,ip,status,user_id){
-    const query = `INSERT INTO users.connexion_logs (email, user_agent, ip, status, user_id) VALUES ($1, $2, $3, $4, $5)`;
+async function logLoginAttempt(email,useragent,ip,status,user_id,session_id){
+    const query = `INSERT INTO users.connexion_logs (email, user_agent, ip, status, user_id, session_id ) VALUES ($1, $2, $3, $4, $5, $6)`;
     try {
-        await pool.query(query, [email,useragent,ip,status,user_id]);
+        await pool.query(query, [email,useragent,ip,status,user_id,session_id]);
         return { code: 200, data: 'Success' };
     } catch (error) {
         return { code: 500, data: error };
@@ -106,4 +106,33 @@ async function getSecret2FA(user_id){
     }
 }
 
-module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA,}
+async function setDefinitiveDB(user_id){
+    const query = "UPDATE users.users SET definitive = true WHERE user_id = $1";
+    try {
+        const result = await pool.query(query, [user_id]);
+        if (result.rowCount > 0) {
+        return { code: 200, data: 'Success' };
+        } else {
+        return { code: 404, data: 'Not found' };
+        }
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
+
+async function setApprovedDB(user_id,status){
+    const query = "UPDATE users.users SET approved = $1 WHERE user_id = $2";
+    try {
+        const result = await pool.query(query, [status,user_id]);
+        if (result.rowCount > 0) {
+        return { code: 200, data: 'Success' };
+        } else {
+        return { code: 404, data: 'Not found' };
+        }
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
+
+
+module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, setApprovedDB, }

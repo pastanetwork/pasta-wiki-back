@@ -3,3 +3,16 @@ main{
 	align-items: center;
 	flex-direction: column;
 }
+
+button{
+	width: 100%;
+}
+
+#two-factor-auth-fieldset{
+	display: flex;
+}
+
+#two-factor-auth-inputs{
+	display: flex;
+	flex-direction: column;
+}

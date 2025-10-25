@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Pastanetwork Wiki Backend</title>
+    <title>Connect - Pastanetwork Wiki Backend</title>
     <link rel="stylesheet" href="/public/global.css">
     <link rel="stylesheet" href="/connect/connect.css">
 </head>
@@ -13,6 +13,9 @@
 		<div id="connect-form">
 			<h2 id="connect-title" data-traduction="connect.login">Login</h2>
 			<fieldset>
+				
+				<label for="username" id="username-label" data-traduction="connect.input.username">Username</label><br/>
+				<input id="username" name="username" type="text" required/><br/>
 				
 				<label for="email" id="email-label" data-traduction="connect.input.email">Email</label><br/>
 				<input id="email" name="email" type="email" required/><br/>
@@ -28,12 +31,26 @@
 				<p id="connect-log"></p>
 				
 			</fieldset>
-			<p data-traduction="connect.switch-to-register"></p>
-			<button data-traduction="connect.switch-to-register.link"></button>
+			<p id="switch-login-register-label" data-traduction="connect.switch-to-register"></p>
+			<button id="switch-login-register" data-traduction="connect.switch-to-register.link"></button>
+		</div>
+
+		<div id="two-factor-auth-form">
+			<h2 id="tfa-title" data-traduction="connect.2fa">2FA Verification</h2>
+			<fieldset id="two-factor-auth-fieldset">
+				<div id="two-factor-auth-inputs">
+					<input id="two-factor-input-code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="123456">
+					<button id="two-factor-send-code">Send</button>
+					<p id="two-factor-auth-log"></p>
+				</div>
+				<div id="two-factor-qrcode-holder">
+
+				</div>
+			</fieldset>
 		</div>
 	</main>
 	<footer></footer>
-	<script src="/public/global.js"></script>
-	<script src="/connect/connect.js"></script>
+	<script src="/public/global.js" type="module" defer></script>
+	<script src="/connect/connect.js" type="module" defer></script>
 </body>
 </html>

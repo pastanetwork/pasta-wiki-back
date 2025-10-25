@@ -13,6 +13,9 @@ function checkJWT(token) {
         const decoded = jwt.verify(token, jwt_values.secret);
         user.user_id=decoded.user_id;
         user.email=decoded.email;
+        user.session_id=decoded.session_id;
+        user.ip=decoded.ip
+        user.verified_2fa=decoded.verified_2fa;
         valid = true;
     } catch (error){
         valid = false;
@@ -28,7 +31,7 @@ async function verifPerm(token,perm_id){
     if (!checkedJWT.ok){
         return false
     }
-    const user = new User({email:checkedJWT.user.email,user_id:checkedJWT.user.user_id});
+    const user = new User({email:checkedJWT.user.email, user_id:checkedJWT.user.user_id, session_id:checkedJWT.user.session_id, ip:checkedJWT.user.ip});
     return await user.checkUserPerms(perm_id);
 }
 

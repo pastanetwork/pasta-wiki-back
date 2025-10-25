@@ -8,18 +8,24 @@ const {checkJWT, verifPerm} = require("../express_utils/utils")
 const router = Router();
 
 router.get("/", async (req, res) => {
-	res.redirect(302, '/connect');
+	return res.redirect(302, '/connect');
 });
 
 router.use('/favicon.ico', express.static(path.join(__dirname, 'public/pasta_logo.svg')));
 
 ///// Connexion /////
+
 router.get("/connect", async (req, res) => {
 	const hasValidJWT = checkJWT(req.cookies.authToken);
-	if (hasValidJWT.ok){
-		res.redirect(302, '/dashboard/');
+    const ip = req.headers["x-forwarded-for"] || "Internal";
+    if (ip === hasValidJWT.user.ip && hasValidJWT.user.verified_2fa){
+        return res.redirect(302, '/dashboard');
+    }
+
+	if (hasValidJWT.ok && req.query.require2fa !== 'true'){
+		return res.redirect(302, '/connect?require2fa=true');
 	}
-	res.sendFile('connect/connect.html', {root: __dirname});
+	return res.sendFile('connect/connect.html', {root: __dirname});
 });
 router.use('/connect', express.static(path.join(__dirname, 'connect')));
 
@@ -34,10 +40,16 @@ const categories = [
 
 const handleStaticRoute = (category) => {
     return async (req, res, next) => {
+        const ip = req.headers["x-forwarded-for"] || "Internal";
+        const token_cookie = req.cookies.authToken;
         if (category.perm !== 0) {
-            const hasPermission = await verifPerm(req.cookies.authToken, category.perm);
+            const hasPermission = await verifPerm(token_cookie, category.perm);
             if (!hasPermission) {
                 return res.status(403).sendFile('403.html', {root: __dirname});
+            }
+            const checkedJWT = checkJWT(token_cookie);
+            if (ip != checkedJWT.user.ip || !checkedJWT.user.verified_2fa){
+                return res.redirect(301, '/connect?require2fa=true');
             }
         }
         
@@ -51,7 +63,7 @@ const handleStaticRoute = (category) => {
         if (!folderPath.startsWith(categoryBase)) {
             return res.status(403).sendFile('403.html', {root: __dirname});
         }
-        
+
         if (fs.existsSync(folderPath)) {
             const stats = fs.statSync(folderPath);
             if (stats.isDirectory()) {
@@ -70,7 +82,7 @@ const handleStaticRoute = (category) => {
             if (err) {
                 return next(err);
             }
-            res.status(404).sendFile('404.html', {root: __dirname});
+            return res.status(404).sendFile('404.html', {root: __dirname});
         });
     };
 };
@@ -81,6 +93,7 @@ categories.forEach(category => {
 });
 
 router.use("/:routePath",(req,res)=>{
-        res.status(404).sendFile('404.html', {root: __dirname});
-    });
+    return res.status(404).sendFile('404.html', {root: __dirname});
+});
+
 module.exports = router;
