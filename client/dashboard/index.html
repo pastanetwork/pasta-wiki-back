@@ -1,17 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/public/global.css">
-</head>
-<body>
-    <header class="flex-al-it-center"></header>
-    <main>
-        <h2>Hello</h2>
-    </main>
-    <footer></footer>
-    <script src="/public/global.js"></script>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard - Pastanetwork Wiki Backend</title>
+        <link rel="stylesheet" href="/public/global.css">
+        <link rel="stylesheet" href="/dashboard/dashboard.css">
+    </head>
+    <body>
+        <header class="flex-al-it-center"></header>
+        <main>
+            <section>
+                <h2><a href="/dashboard/articles"><span data-traduction="dashboard.categories">Categories</span><span id="category-count"></span></a></h2>
+                <article>
+                    <div id="graph-1" class="graph">
+                        <h3 data-traduction="dashboard.by_lang">By langs</h3>
+                    </div>
+                </article>
+                <p><a href="/dashboard/categories" data-traduction="dashboard.edit.categories">Edit categories</a></p>
+            </section>
+            <hr>
+            <section>
+                <h2><a href="/dashboard/articles"><span data-traduction="dashboard.articles">Articles</span><span id="article-count"></span></a></h2>
+                <article>
+                    <div id="graph-2" class="graph">
+                        <h3 data-traduction="dashboard.by_lang">By langs</h3>
+                    </div>
+                    <div id="graph-3" class="graph">
+                        <h3 data-traduction="dashboard.by_categories">By categories</h3>
+                    </div>
+                </article>
+                <p><a href="/dashboard/articles" data-traduction="dashboard.edit.articles">Edit articles</a></p>
+            </section>
+            <hr>
+        </main>
+        <footer></footer>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="/public/global.js" type="module" defer></script>
+        <script src="/public/apexCharts.js" type="module" defer></script>
+        <script src="/dashboard/dashboard.js" type="module" defer></script>
+    </body>
 </html>

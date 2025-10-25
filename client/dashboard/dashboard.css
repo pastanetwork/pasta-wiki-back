@@ -1,0 +1,35 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+main{
+    padding-top: 20px;
+    width: 80%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    min-height: 100vh;
+}
+
+h2{
+    font-size: 2em;
+}
+
+article{
+    display: flex;
+    margin: 10px 0px;
+}
+
+.graph{
+    width: 400px;
+}
+
+a{
+    color:white;
+}
+
+hr{
+    margin: 20px 0px;
+}
