@@ -1,12 +1,20 @@
 {
+	"connect.2fa": "2FA Verification",
 	"connect.input.confirm_password": "Confirm password",
 	"connect.input.email": "Email",
 	"connect.input.password": "Password",
 	"connect.input.send": "Send",
+	"connect.input.username": "Username",
 	"connect.login": "Login",
 	"connect.register": "Register",
 	"connect.switch-to-connect": "Already have an account ?",
 	"connect.switch-to-connect.link": "Login",
 	"connect.switch-to-register": "No account yet ?",
-	"connect.switch-to-register.link": "Register"
+	"connect.switch-to-register.link": "Register",
+	"dashboard.articles": "Articles",
+	"dashboard.by_categories": "By categories",
+	"dashboard.by_lang": "By langs",
+	"dashboard.categories": "Categories",
+	"dashboard.edit.articles": "Edit articles",
+	"dashboard.edit.categories": "Edit categories"
 }
