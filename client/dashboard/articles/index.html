@@ -5,13 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articles - Pastanetwork Wiki Backend</title>
     <link rel="stylesheet" href="/public/global.css">
+    <link rel="stylesheet" href="/dashboard/articles/articles.css">
 </head>
 <body>
     <header class="flex-al-it-center"></header>
     <main>
-        <h2>World</h2>
+        <div id="articles-upper-comp">
+            <h2>Articles</h2>
+            <div>
+                <input id="articles-list-search-input" type="search" placeholder="Search article">
+                <button id="articles-list-search-btn">Q</button>
+                <button id="articles-list-refresh">R</button>
+            </div>
+        </div>
+        <section>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Lang code</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Edition</th>
+                        <th scope="col">Deletion</th>
+                        <th scope="col">Enabled</th>
+                    </tr>
+                </thead>
+                <tbody id="articles-list-holder">
+                    
+                </tbody>
+            </table>
+        </section>
     </main>
     <footer></footer>
     <script src="/public/global.js" type="module" defer></script>
+    <script src="/dashboard/articles/articles.js" type="module" defer></script>
 </body>
 </html>
