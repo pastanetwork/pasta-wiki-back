@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template - Pastanetwork Wiki Backend</title>
+    <link rel="stylesheet" href="/public/global.css">
+    <link rel="stylesheet" href="/dashboard/articles/edit/edit.css">
+</head>
+<body>
+    <header class="flex-al-it-center"></header>
+    <h2><span id="article-edit-category"></span> - <span id="article-edit-title"></h2>
+    <main>
+        <section>
+            <hr>
+            <textarea id="editor" placeholder="Type your markdown here..."># Hello World
+
+This is a **live** markdown preview.
+
+## Features
+- Real-time rendering
+- Simple and clean
+- Easy to use
+
+Try typing some *markdown*!</textarea>
+        </section>
+        <section>
+            <hr>
+            <div id="preview"></div>
+        </section>
+    </main>
+    <footer></footer>
+    <script src="/public/global.js" type="module" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+    <script src="/dashboard/articles/edit/edit.js" type="module" defer></script>
+</body>
+</html>
