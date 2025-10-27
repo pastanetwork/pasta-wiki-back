@@ -1,23 +1,35 @@
 const { Router } = require("express");
 const router = Router();
 
-const { getArticles, publishArticle, modifyArticle } = require("../utils")
+const { getArticles, publishArticle, modifyArticle, getArticlesWriter } = require("../utils")
 const { verifPerm } = require("../../../express_utils/utils");
 
 router.get("/all",async (req,res)=>{
-    let res_log=await getArticles("all");
+    let res_log={};
+    const hasPermission = await verifPerm(req.cookies.authToken, 6);
+    if (hasPermission) {
+        res_log=await getArticlesWriter("all")
+    } else {
+        res_log=await getArticles("all");
+    }
     res.status(res_log.code).json({data:res_log.msg});
 });
 
-router.get("/lang/:lang",async (req,res)=>{
+router.get("/:lang",async (req,res)=>{
     const { lang } = req.params;
-    let res_log=await getArticles(lang);
+    let res_log={};
+    const hasPermission = await verifPerm(req.cookies.authToken, 8);
+    if (hasPermission) {
+        res_log=await getArticlesWriter(lang)
+    } else {
+        res_log=await getArticles(lang)
+    }
     res.status(res_log.code).json({data:res_log.msg});
 });
 
 router.post("/publish", async (req,res)=>{
     const { title, category, content, enabled} = req.body;
-    const hasPermission = await verifPerm(req.cookies.authToken, 6);
+    const hasPermission = await verifPerm(req.cookies.authToken, 8);
         if (!hasPermission) {
             return res.status(401).end();
         }
