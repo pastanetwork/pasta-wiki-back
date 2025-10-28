@@ -63,14 +63,14 @@ async function deleteButton(el, article) {
             <h3>${article.title}</h3>
             <br>
             <p>This action will delete ${article.title} permanently.<p>
-            <br><br>
+            <br>
             <input type="checkbox" name="agreement" id="article-list-alert-agree">
             <label for="agreement"><code>I understand this action is irreversible and can't be undone.</code></label>
             <br>
             <br>
-            <div>
-                <button id="article-list-alert-undo">Undo</button>
-                <button id="article-list-alert-confirm">Confirm</button>
+            <div id="article-list-alert-btn-holder">
+                <button id="article-list-alert-undo"><h3>Undo</h3></button>
+                <button id="article-list-alert-confirm"><h3>Confirm</h3></button>
             </div>
         </fieldset>
         `);
@@ -79,11 +79,11 @@ async function deleteButton(el, article) {
             if (document.getElementById("article-list-alert-agree").checked){
                 await fetchRequest("PUT", "/api/v1/articles/delete", sent_values);
                 await refreshData();
-                setAlertOpened(false,"")
+                setAlertOpened(false,"");
             }
         });
         document.getElementById("article-list-alert-undo").addEventListener("click",async function(){
-            setAlertOpened(false,"")
+            setAlertOpened(false,"");
         });
         
     });

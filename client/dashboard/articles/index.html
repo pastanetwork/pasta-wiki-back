@@ -12,10 +12,22 @@
     <main>
         <div id="articles-upper-comp">
             <h2>Articles</h2>
-            <div>
-                <input id="articles-list-search-input" type="search" placeholder="Search article">
-                <button id="articles-list-search-btn">Q</button>
-                <button id="articles-list-refresh">R</button>
+            <div id="articles-upper-comp-toolbar">
+                <hr>
+                <div>
+                    <select>
+                        <option value="default" selected disabled>Select category</option>
+                    </select>
+                    <input type="text" placeholder="Article title">
+                    <button>New article</button>
+                </div>
+                <hr>
+                <div>
+                    <input id="articles-list-search-input" type="search" placeholder="Search article">
+                    <button id="articles-list-search-btn">Q</button>
+                    <button id="articles-list-refresh">R</button>    
+                </div>
+                <hr>
             </div>
         </div>
         <section>
