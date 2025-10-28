@@ -6,7 +6,7 @@ const { verifPerm } = require("../../../express_utils/utils");
 
 router.get("/all",async (req,res)=>{
     let res_log={};
-    const hasPermission = await verifPerm(req.cookies.authToken, 6);
+    const hasPermission = await verifPerm(req.cookies.authToken, 8);
     if (hasPermission) {
         res_log=await getArticlesWriter("all")
     } else {
@@ -29,7 +29,7 @@ router.get("/:lang",async (req,res)=>{
 
 router.post("/publish", async (req,res)=>{
     const { title, category, content, enabled} = req.body;
-    const hasPermission = await verifPerm(req.cookies.authToken, 8);
+    const hasPermission = await verifPerm(req.cookies.authToken, 5);
         if (!hasPermission) {
             return res.status(401).end();
         }
@@ -39,7 +39,7 @@ router.post("/publish", async (req,res)=>{
 
 router.put("/modify", async (req,res)=>{
     const { title, category, content, enabled, prev_title} = req.body;
-    const hasPermission = await verifPerm(req.cookies.authToken, 7);
+    const hasPermission = await verifPerm(req.cookies.authToken, 6);
         if (!hasPermission) {
             return res.status(401).end();
         }
@@ -50,12 +50,13 @@ router.put("/modify", async (req,res)=>{
 
 router.put("/delete", async (req,res)=>{
     const { title, category} = req.body;
-    const hasPermission = await verifPerm(req.cookies.authToken, 8);
+    const hasPermission = await verifPerm(req.cookies.authToken, 7);
         if (!hasPermission) {
             return res.status(401).end();
         }
     ///// SUPPPRESSION À IMPLÉMENTER let res_log=await modifyArticle(title, category, content, enabled, prev_title); 
-    res.status(res_log.code).json({data:res_log.msg});
+    console.log("Contenu supprimé")
+    res.status(200).json({data:"ok"});
 
 });
 

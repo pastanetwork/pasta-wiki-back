@@ -63,7 +63,7 @@ async function modifyArticle(title, category, content, enabled, prev_title){
     const result_obj = updateArticle(title,category,content,enabled, prev_title);
     if (result_obj.code===500){return db_error;}
     
-    return {msg:"Article created successfully",code:200};
+    return {msg:"Article updated successfully",code:200};
 }
 
 
@@ -87,7 +87,7 @@ async function getArticlesWriter(lang="all"){
             category_urlized:URLize(i.category_name),
             lang:i.lang_code,
             content:i.content,
-            enabled:true,
+            enabled:i.enabled,
         });
     }
 
