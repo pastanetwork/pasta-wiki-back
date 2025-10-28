@@ -35,4 +35,36 @@ a{
 #articles-upper-comp{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+.article-enabled-checkbox{
+    width: 32px;
+    height: 32px;
+}
+
+#article-list-confirm{
+    position: fixed;
+    top: 80px;
+    bottom: 80px;
+    width: 100vw;
+    background-color: rgba(20, 20, 20, 0.8);
+}
+#article-list-confirm[data-opened=false]{
+    display: none;
+}
+
+#article-list-confirm[data-opened=true]{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+#article-list-alert-delete{
+    height: 500px;
+    padding: 25px 50px;
+    border: solid;
+    border-radius: 4%;
+    border-width: 10px;
+    border-color: black;
+    background-color: rgba(124, 21, 21, 0.8);
 }
