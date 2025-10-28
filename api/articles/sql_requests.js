@@ -53,6 +53,20 @@ async function updateArticle(title, category, content, enabled, prev_title) {
     }
 }
 
+async function deleteArticleDB(title,category) {
+    const category_res_obj = await getCategoryIdFromName(category);
+    if (category_res_obj.code===500){
+        return {code:500, data: category_res_obj.data};
+    }
+    const query = `DELETE FROM articles.articles WHERE article_name = $1 AND category_id = $2`;
+    try{
+        await pool.query(query, [title,category_res_obj.data.category_id])
+        return { code: 200, data: "Success" };
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
+
 
 async function getCategoryIdFromName(category) {
     const query = `SELECT category_id, lang_id FROM articles.categories WHERE category_ref = $1`;
@@ -67,4 +81,4 @@ async function getCategoryIdFromName(category) {
     }
 }
 
-module.exports = { getAllArticles, verifyArticleDB, createArticle, updateArticle }
+module.exports = { getAllArticles, verifyArticleDB, createArticle, updateArticle, deleteArticleDB }

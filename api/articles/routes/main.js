@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 
-const { getArticles, publishArticle, modifyArticle, getArticlesWriter } = require("../utils")
+const { getArticles, publishArticle, modifyArticle, getArticlesWriter, deleteArticle,  } = require("../utils")
 const { verifPerm } = require("../../../express_utils/utils");
 
 router.get("/all",async (req,res)=>{
@@ -51,12 +51,11 @@ router.put("/modify", async (req,res)=>{
 router.put("/delete", async (req,res)=>{
     const { title, category} = req.body;
     const hasPermission = await verifPerm(req.cookies.authToken, 7);
-        if (!hasPermission) {
-            return res.status(401).end();
-        }
-    ///// SUPPPRESSION À IMPLÉMENTER let res_log=await modifyArticle(title, category, content, enabled, prev_title); 
-    console.log("Contenu supprimé")
-    res.status(200).json({data:"ok"});
+    if (!hasPermission) {
+        return res.status(401).end();
+    }
+   const res_log = await deleteArticle(title,category);
+    res.status(res_log.code).json({data:res_log.msg});
 
 });
 

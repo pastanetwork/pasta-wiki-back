@@ -1,4 +1,4 @@
-const { getAllArticles, verifyArticleDB, createArticle, updateArticle } = require("./sql_requests")
+const { getAllArticles, verifyArticleDB, createArticle, updateArticle, deleteArticleDB } = require("./sql_requests")
 const { URLize } = require("../../express_utils/utils");
 
 const db_error = {msg:`Error : Something went wrong with the database`,code:500};
@@ -103,4 +103,19 @@ async function getArticlesWriter(lang="all"){
     return {msg:result,code:200};
 }
 
-module.exports = { getArticles, publishArticle, modifyArticle, getArticlesWriter, }
+async function deleteArticle(title,category) {
+    const exist = await verifyArticleDB(prev_title,category);
+    if (exist.code===500){return db_error;};
+    if (exist.data===false){
+        return {msg:`Error : Can't delete article. This article doesn't exist.`,code:404};
+    }
+    const delete_article = await deleteArticleDB(title,category);
+    if (delete_article.code===200){
+        return {msg:"Article deleted successfully",code:200}
+    } else {
+        return {msg:`Error : Article deletion failed. Please try again later`,code:503};
+    };
+
+}
+
+module.exports = { getArticles, publishArticle, modifyArticle, getArticlesWriter, deleteArticle, }
