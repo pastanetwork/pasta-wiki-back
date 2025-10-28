@@ -79,6 +79,7 @@ a{
     padding: 15px 0px;
     border-radius: 2%;
     border: solid white 3px;
+    cursor: pointer;
 }
 
 #article-list-alert-confirm{
