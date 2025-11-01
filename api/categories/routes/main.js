@@ -32,12 +32,12 @@ router.post("/publish", async (req,res)=>{
 });
 
 router.put("/modify", async (req,res)=>{
-    const { title, lang, enabled, prev_title} = req.body;
+    const { title, lang, enabled, prev_title, prev_lang} = req.body;
     const hasPermission = await verifPerm(req.cookies.authToken, 4);
         if (!hasPermission) {
             return res.status(401).end();
         }
-    let res_log=await modifyCategory(title, lang, enabled, prev_title);
+    let res_log=await modifyCategory(title, lang, enabled, prev_title, prev_lang);
     res.status(res_log.code).json({data:res_log.msg});
 
 });

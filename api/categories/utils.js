@@ -72,8 +72,9 @@ async function publishCategory(title, lang, enabled){
     return {msg:"Category created successfully",code:201}
 }
 
-async function modifyCategory(title, lang, enabled, prev_title){
-    const exist = await verifyCategoryDB(prev_title, lang);
+async function modifyCategory(title, lang, enabled, prev_title, prev_lang){
+    const exist = await verifyCategoryDB(prev_title, prev_lang);
+    console.log(exist)
     if (exist.code===500){return db_error;};
     if (exist.data===false){
         return {msg:`Error : Can't modify category. This category doesn't exist.`,code:404};
