@@ -11,7 +11,7 @@ const icons = {
 let category_list = "";
 let articles_data = "";
 async function refreshData() {
-    refreshCategory();
+    await refreshCategory();
     refreshArticles();
 }
 await refreshData();
