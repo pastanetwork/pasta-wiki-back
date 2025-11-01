@@ -6,7 +6,7 @@ const { verifPerm } = require("../../../express_utils/utils");
 
 router.get("/all",async (req,res)=>{
     let res_log={};
-    const hasPermission = await verifPerm(req.cookies.authToken, 8);
+    const hasPermission = await verifPerm(req.cookies.authToken, 9);
     if (hasPermission) {
         res_log=await getCategoriesWriter();
     } else {
