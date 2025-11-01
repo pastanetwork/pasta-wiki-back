@@ -38,6 +38,26 @@ async function getCategories(lang="all"){
     return { msg:result,code:200 };
 }
 
+async function getCategoriesWriter(){
+
+    const categories = await getAllCategories();
+    if (categories.code!==200){
+        return db_error;
+    }
+
+    let request_result=[];
+    for (let i of categories.data){
+        request_result.push({
+            title:i.category_name,
+            title_urlized:URLize(i.category_name),
+            lang:i.lang_code,
+            articles_nb:i.article_count,
+            enabled:i.enabled,
+        });
+    }
+    return { msg:request_result,code:200 };
+}
+
 async function publishCategory(title, lang, enabled){
     const exist = await verifyCategoryDB(title, lang);
     console.log(exist)
@@ -67,7 +87,6 @@ async function modifyCategory(title, lang, enabled, prev_title){
 
 async function getLangs(){
     const langs_list = await getLangsDB();
-    console.log(langs_list); 
     if (langs_list.code===500){return db_error;};
     let langs=[];
     for (let i of langs_list.data){
@@ -81,4 +100,4 @@ async function getLangs(){
     return {code:langs_list.code,msg:langs}
 }
 
-module.exports = { getCategories, publishCategory, modifyCategory, getLangs, };
+module.exports = { getCategories, publishCategory, modifyCategory, getLangs, getCategoriesWriter, };

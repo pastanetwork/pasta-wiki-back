@@ -1,11 +1,17 @@
 const { Router } = require("express");
 const router = Router();
 
-const { getCategories, publishCategory, modifyCategory, getLangs } = require("../utils");
+const { getCategories, publishCategory, modifyCategory, getLangs, getCategoriesWriter } = require("../utils");
 const { verifPerm } = require("../../../express_utils/utils");
 
 router.get("/all",async (req,res)=>{
-    let res_log=await getCategories("all");
+    let res_log={};
+    const hasPermission = await verifPerm(req.cookies.authToken, 8);
+    if (hasPermission) {
+        res_log=await getCategoriesWriter();
+    } else {
+        res_log=await getCategories("all");
+    }
     res.status(res_log.code).json({data:res_log.msg});
 });
 
