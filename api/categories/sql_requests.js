@@ -87,4 +87,18 @@ async function getLangsDB() {
         return { code:500, data:error};
     }
 }
-module.exports = { getAllCategories, verifyCategoryDB, createCategory, updateCategory, getLangsDB };
+
+async function deleteCategoryDB(title,lang) {
+    const lang_res_obj = await getLangIdFromName(lang);
+    if (lang_res_obj.code===500){
+        return {code:500, data: lang_res_obj.data};
+    }
+    const query = `DELETE FROM articles.categories WHERE category_name = $1 AND lang_id = $2`;
+    try{
+        await pool.query(query, [title,lang_res_obj.data])
+        return { code: 200, data: "Success" };
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
+module.exports = { getAllCategories, verifyCategoryDB, createCategory, updateCategory, getLangsDB, deleteCategoryDB, };

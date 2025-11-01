@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 
-const { getCategories, publishCategory, modifyCategory, getLangs, getCategoriesWriter } = require("../utils");
+const { getCategories, publishCategory, modifyCategory, getLangs, getCategoriesWriter, deleteCategory } = require("../utils");
 const { verifPerm } = require("../../../express_utils/utils");
 
 router.get("/all",async (req,res)=>{
@@ -23,7 +23,7 @@ router.get("/lang/:lang",async (req,res)=>{
 
 router.post("/publish", async (req,res)=>{
     const { title, lang, enabled} = req.body;
-    const hasPermission = await verifPerm(req.cookies.authToken, 3);
+    const hasPermission = await verifPerm(req.cookies.authToken, 2);
         if (!hasPermission) {
             return res.status(401).end();
         }
@@ -33,7 +33,7 @@ router.post("/publish", async (req,res)=>{
 
 router.put("/modify", async (req,res)=>{
     const { title, lang, enabled, prev_title, prev_lang} = req.body;
-    const hasPermission = await verifPerm(req.cookies.authToken, 4);
+    const hasPermission = await verifPerm(req.cookies.authToken, 3);
         if (!hasPermission) {
             return res.status(401).end();
         }
@@ -43,12 +43,12 @@ router.put("/modify", async (req,res)=>{
 });
 
 router.put("/delete", async (req,res)=>{
-    const { title} = req.body;
-    const hasPermission = await verifPerm(req.cookies.authToken, 5);
+    const { title, lang } = req.body;
+    const hasPermission = await verifPerm(req.cookies.authToken, 4);
         if (!hasPermission) {
             return res.status(401).end();
         }
-    ///// SUPPPRESSION À IMPLÉMENTER let res_log=await modifyCategory(title, lang, enabled, prev_title);
+    const res_log = await deleteCategory(title,lang);
     res.status(res_log.code).json({data:res_log.msg});
 
 });

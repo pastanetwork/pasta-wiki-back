@@ -1,4 +1,4 @@
-const { getAllCategories, verifyCategoryDB, createCategory, updateCategory, getLangsDB, } = require("./sql_requests")
+const { getAllCategories, verifyCategoryDB, createCategory, updateCategory, getLangsDB, deleteCategoryDB,} = require("./sql_requests")
 const { URLize } = require("../../express_utils/utils");
 
 const db_error = {msg:`Error : Something went wrong with the database`,code:500};
@@ -60,7 +60,6 @@ async function getCategoriesWriter(){
 
 async function publishCategory(title, lang, enabled){
     const exist = await verifyCategoryDB(title, lang);
-    console.log(exist)
     if (exist.code===500){return db_error;};
     if (exist.data===true){
         return {msg:`Error : Can't create category. A category with this title already exist.`,code:403};
@@ -74,7 +73,6 @@ async function publishCategory(title, lang, enabled){
 
 async function modifyCategory(title, lang, enabled, prev_title, prev_lang){
     const exist = await verifyCategoryDB(prev_title, prev_lang);
-    console.log(exist)
     if (exist.code===500){return db_error;};
     if (exist.data===false){
         return {msg:`Error : Can't modify category. This category doesn't exist.`,code:404};
@@ -101,4 +99,18 @@ async function getLangs(){
     return {code:langs_list.code,msg:langs}
 }
 
-module.exports = { getCategories, publishCategory, modifyCategory, getLangs, getCategoriesWriter, };
+async function deleteCategory(title, lang){
+    const exist = await verifyCategoryDB(title,lang);
+    if (exist.code===500){return db_error;};
+    if (exist.data===false){
+        return {msg:`Error : Can't delete category. This category doesn't exist.`,code:404};
+    }
+    const delete_article = await deleteCategoryDB(title,lang);
+    if (delete_article.code===200){
+        return {msg:"Category deleted successfully",code:200}
+    } else {
+        return {msg:`Error : Category deletion failed. Please try again later`,code:503};
+    };
+}
+
+module.exports = { getCategories, publishCategory, modifyCategory, getLangs, getCategoriesWriter, deleteCategory, };
