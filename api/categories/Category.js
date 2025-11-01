@@ -1,4 +1,4 @@
-class User {
+class Category {
     constructor(userdata = {}) {
         this.username = userdata.username || "";
         this.email = userdata.email || "";

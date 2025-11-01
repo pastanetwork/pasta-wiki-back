@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 
-const { getCategories, publishCategory, modifyCategory } = require("../utils");
+const { getCategories, publishCategory, modifyCategory, getLangs } = require("../utils");
 const { verifPerm } = require("../../../express_utils/utils");
 
 router.get("/all",async (req,res)=>{
@@ -45,6 +45,11 @@ router.put("/delete", async (req,res)=>{
     ///// SUPPPRESSION À IMPLÉMENTER let res_log=await modifyCategory(title, lang, enabled, prev_title);
     res.status(res_log.code).json({data:res_log.msg});
 
+});
+
+router.get("/get-langs",async (req,res)=>{
+    let res_log = await getLangs();
+    res.status(res_log.code).json({data:res_log.msg});
 });
 
 module.exports = router;

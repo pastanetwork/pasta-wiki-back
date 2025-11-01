@@ -3,7 +3,7 @@ const { URLize } = require("../../express_utils/utils");
 
 async function getAllCategories(){
     try {
-        const categories = await pool.query(`SELECT c.category_name,c.lang_id, c.enabled, l.lang_code FROM articles.categories c JOIN articles.langs_codes l ON c.lang_id = l.lang_id`);
+        const categories = await pool.query(`SELECT c.category_name,c.lang_id, c.enabled, l.lang_code, COUNT(a.category_id) as article_count FROM articles.categories c JOIN articles.langs_codes l ON c.lang_id = l.lang_id LEFT JOIN articles.articles a ON c.category_id = a.category_id GROUP BY c.category_id, c.category_name, c.lang_id, c.enabled, l.lang_code ORDER BY c.category_name;`);
         return {code:200,data:categories.rows};
     } catch (error) {
         console.log(error);
@@ -75,4 +75,16 @@ async function getLangIdFromName(lang) {
     }
 }
 
-module.exports = { getAllCategories, verifyCategoryDB, createCategory, updateCategory };
+async function getLangsDB() {
+    const query=`SELECT lang_code, lang_name FROM articles.langs_codes`;
+    try {
+        const result = await pool.query(query);
+        if (result.rows.length === 0){
+            return { code: 404, data: `No langs found.` };
+        }
+        return { code: 200, data:result.rows}
+    } catch (error) {
+        return { code:500, data:error};
+    }
+}
+module.exports = { getAllCategories, verifyCategoryDB, createCategory, updateCategory, getLangsDB };

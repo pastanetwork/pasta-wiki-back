@@ -1,4 +1,4 @@
-const { getAllCategories, verifyCategoryDB, createCategory, updateCategory  } = require("./sql_requests")
+const { getAllCategories, verifyCategoryDB, createCategory, updateCategory, getLangsDB, } = require("./sql_requests")
 const { URLize } = require("../../express_utils/utils");
 
 const db_error = {msg:`Error : Something went wrong with the database`,code:500};
@@ -21,6 +21,7 @@ async function getCategories(lang="all"){
                 title:i.category_name,
                 title_urlized:URLize(i.category_name),
                 lang:i.lang_code,
+                articles_nb:i.article_count,
             });
         }
     }
@@ -64,4 +65,20 @@ async function modifyCategory(title, lang, enabled, prev_title){
     return {msg:"Category modified successfully",code:200}
 }
 
-module.exports = { getCategories, publishCategory, modifyCategory };
+async function getLangs(){
+    const langs_list = await getLangsDB();
+    console.log(langs_list); 
+    if (langs_list.code===500){return db_error;};
+    let langs=[];
+    for (let i of langs_list.data){
+        langs.push ({
+            lang:{
+                name:i.lang_name,
+                code:i.lang_code,
+            }
+        })
+    }
+    return {code:langs_list.code,msg:langs}
+}
+
+module.exports = { getCategories, publishCategory, modifyCategory, getLangs, };
