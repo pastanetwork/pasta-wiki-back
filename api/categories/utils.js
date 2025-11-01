@@ -16,7 +16,7 @@ async function getCategories(lang="all"){
 
     let request_result=[];
     for (let i of categories.data){
-        if (i.enabled && i.title !== "none"){
+        if (i.enabled && i.category_name !== "none"){
             request_result.push({
                 title:i.category_name,
                 title_urlized:URLize(i.category_name),
@@ -47,7 +47,7 @@ async function getCategoriesWriter(){
 
     let request_result=[];
     for (let i of categories.data){
-        if (i.title !== "none"){
+        if (i.category_name !== "none"){
             request_result.push({
                 title:i.category_name,
                 title_urlized:URLize(i.category_name),
