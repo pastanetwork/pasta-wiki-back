@@ -3,15 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories - Pastanetwork Wiki Backend</title>
+    <title>categories - Pastanetwork Wiki Backend</title>
     <link rel="stylesheet" href="/public/global.css">
+    <link rel="stylesheet" href="/dashboard/categories/categories.css">
 </head>
 <body>
     <header class="flex-al-it-center"></header>
     <main>
-        <h2>World</h2>
+        <div id="categories-upper-comp">
+            <nav id="categories-nav-bar">
+                <hr>
+                <h2>
+                    <a href="/dashboard/articles">Articles</a>
+                </h2>
+                <hr>
+                <h2>Categories</h2>
+                <hr>
+            </nav>
+            <div id="categories-upper-comp-toolbar">
+                <hr>
+                <div>
+                    <select id="categories-upper-comp-toolbar-new-category-lang">
+                        <option value="default" selected disabled>Select lang</option>
+                    </select>
+                    <input id="categories-upper-comp-toolbar-new-category-title" type="text" placeholder="category title">
+                    <button id="categories-upper-comp-toolbar-new-category-send">New category</button>
+                </div>
+                <hr>
+                <div id="categories-list-tools">
+                    <input id="categories-list-search-input" type="search" placeholder="Search category">
+                    <button id="categories-list-refresh">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                        </svg>
+                    </button>    
+                </div>
+                <hr>
+            </div>
+        </div>
+        <section>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Lang</th>
+                        <th scope="col">Articles</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col">Enabled</th>
+                    </tr>
+                </thead>
+                <tbody id="categories-list-holder">
+                    
+                </tbody>
+            </table>
+        </section>
     </main>
     <footer></footer>
+    <div id="category-list-confirm" data-opened="false"></div>
     <script src="/public/global.js" type="module" defer></script>
+    <script src="/dashboard/categories/categories.js" type="module" defer></script>
 </body>
 </html>
