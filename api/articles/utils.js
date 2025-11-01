@@ -16,7 +16,7 @@ async function getArticles(lang="all"){
 
     let request_result=[];
     for (let i of articles.data){
-        if (i.enabled){
+        if (i.enabled && i.category_enabled){
             request_result.push({
                 title:i.article_name,
                 title_urlized:URLize(i.article_name),

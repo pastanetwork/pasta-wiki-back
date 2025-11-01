@@ -16,7 +16,7 @@ async function getCategories(lang="all"){
 
     let request_result=[];
     for (let i of categories.data){
-        if (i.enabled){
+        if (i.enabled && i.title !== "none"){
             request_result.push({
                 title:i.category_name,
                 title_urlized:URLize(i.category_name),
@@ -47,13 +47,15 @@ async function getCategoriesWriter(){
 
     let request_result=[];
     for (let i of categories.data){
-        request_result.push({
-            title:i.category_name,
-            title_urlized:URLize(i.category_name),
-            lang:i.lang_code,
-            articles_nb:i.article_count,
-            enabled:i.enabled,
-        });
+        if (i.title !== "none"){
+            request_result.push({
+                title:i.category_name,
+                title_urlized:URLize(i.category_name),
+                lang:i.lang_code,
+                articles_nb:i.article_count,
+                enabled:i.enabled,
+            });
+        }
     }
     return { msg:request_result,code:200 };
 }
@@ -72,6 +74,9 @@ async function publishCategory(title, lang, enabled){
 }
 
 async function modifyCategory(title, lang, enabled, prev_title, prev_lang){
+    if (title==="none"){
+        return {msg:`This category is not editable.`,code:412};
+    }
     const exist = await verifyCategoryDB(prev_title, prev_lang);
     if (exist.code===500){return db_error;};
     if (exist.data===false){
@@ -89,17 +94,22 @@ async function getLangs(){
     if (langs_list.code===500){return db_error;};
     let langs=[];
     for (let i of langs_list.data){
-        langs.push ({
-            lang:{
-                name:i.lang_name,
-                code:i.lang_code,
-            }
-        })
+        if (i.lang_name !== "none"){
+            langs.push ({
+                lang:{
+                    name:i.lang_name,
+                    code:i.lang_code,
+                }
+            });
+        }
     }
     return {code:langs_list.code,msg:langs}
 }
 
 async function deleteCategory(title, lang){
+    if (title==="none"){
+        return {msg:`You can't delete this category.`,code:412};
+    }
     const exist = await verifyCategoryDB(title,lang);
     if (exist.code===500){return db_error;};
     if (exist.data===false){
