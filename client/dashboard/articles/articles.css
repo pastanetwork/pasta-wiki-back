@@ -38,6 +38,17 @@ a{
     align-items: center;
 }
 
+#articles-nav-bar{
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+}
+
+#articles-nav-bar hr{
+    height: 50px;
+    width: 3px;
+} 
+
 #articles-upper-comp-toolbar{
     width: fit;
     display: flex;
@@ -101,4 +112,16 @@ a{
     border-width: 10px;
     border-color: rgb(20,20,20);
     background-color: rgba(63, 63, 63, 0.5);
+}
+
+#articles-list-tools{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#articles-list-refresh{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
