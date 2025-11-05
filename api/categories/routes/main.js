@@ -3,6 +3,7 @@ const router = Router();
 
 const { getCategories, publishCategory, modifyCategory, getLangs, getCategoriesWriter, deleteCategory } = require("../utils");
 const { verifPerm } = require("../../../express_utils/utils");
+const Category = require("../Category")
 
 router.get("/all",async (req,res)=>{
     let res_log={};
@@ -45,10 +46,12 @@ router.put("/modify", async (req,res)=>{
 router.put("/delete", async (req,res)=>{
     const { title, lang } = req.body;
     const hasPermission = await verifPerm(req.cookies.authToken, 4);
-        if (!hasPermission) {
-            return res.status(401).end();
-        }
-    const res_log = await deleteCategory(title,lang);
+    if (!hasPermission) {
+        return res.status(401).end();
+    }
+    const category = new Category({title:title,lang:lang});
+
+    const res_log = await category.delete();
     res.status(res_log.code).json({data:res_log.msg});
 
 });

@@ -10,7 +10,6 @@ async function importsClientLangs() {
     
     const langData = {};
     
-    // First, read all files into langData
     await Promise.all(jsonFiles.map(async (file) => {
         const filePath = path.join(folderPath, file);
         const fileContent = await fs.readFile(filePath, 'utf8');
@@ -18,7 +17,6 @@ async function importsClientLangs() {
         langData[fileName] = JSON.parse(fileContent);    
     }));
     
-    // Now invert the structure - clear and repopulate client_langs
     Object.keys(client_langs).forEach(key => delete client_langs[key]);
     
     for (const [lang, translations] of Object.entries(langData)) {
