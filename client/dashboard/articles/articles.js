@@ -170,7 +170,8 @@ async function enabledButton(el, article) {
 }
 
 async function selectCategory(el, article){
-    let dom=""
+    let category_none = article.category === "none";
+    let dom=`<option value="none" `+category_none+`>none</option>\n`
     for (let i of category_list.data){
         let selected=""
         if (article.category===i.title){
