@@ -4,6 +4,18 @@
     justify-content: space-between;
 }
 
+#article-edit-back{
+    margin-left: 10px;
+}
+
+#article-edit-back a{
+    color: white;
+}
+
+#article-edit-menu{
+    margin-right: 15px;
+}
+
 main{
     display: flex;
 }
