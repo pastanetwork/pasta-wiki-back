@@ -108,7 +108,6 @@ async function createNewcategory() {
 
 async function deleteButton(el, category) {
     el.addEventListener("click", async function() {
-        console.log(category)
         const sent_values = {
             title: category.title,
             lang: category.lang,
