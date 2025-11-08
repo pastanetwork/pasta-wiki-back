@@ -1,4 +1,4 @@
-import { fetchData } from "/public/global.js"
+import { fetchData, updateLang } from "/public/global.js"
 
 const article_list_holder = document.getElementById("articles-list-holder");
 const new_article_category_selector = document.getElementById("articles-upper-comp-toolbar-new-article-category");
@@ -12,13 +12,14 @@ let category_list = "";
 let articles_data = "";
 async function refreshData() {
     await refreshCategory();
-    refreshArticles();
+    await refreshArticles();
+    updateLang();
 }
 await refreshData();
 
 async function refreshCategory() {
     category_list = await fetchData("/api/v1/categories/all");
-    new_article_category_selector.innerHTML=`<option value="default" selected disabled>Select category</option>`;
+    new_article_category_selector.innerHTML=`<option value="default" selected disabled data-traduction="dashboard.articles.select_category">Select category</option>`;
     for (let el of category_list.data){
         new_article_category_selector.innerHTML+=`<option value="${el.title}">${el.title} (${el.lang})</option>`
     }

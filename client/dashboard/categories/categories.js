@@ -1,4 +1,4 @@
-import { fetchData } from "/public/global.js"
+import { fetchData, updateLang } from "/public/global.js"
 
 const category_list_holder = document.getElementById("categories-list-holder");
 const new_category_lang_selector = document.getElementById("categories-upper-comp-toolbar-new-category-lang");
@@ -12,13 +12,14 @@ let langs_list = "";
 let categories_data = "";
 async function refreshData() {
     await refreshLangs();
-    refreshCategories();
+    await refreshCategories();
+    updateLang();
 }
 await refreshData();
 
 async function refreshLangs() {
     langs_list = await fetchData("/api/v1/categories/get-langs");
-    new_category_lang_selector.innerHTML=`<option value="default" selected disabled>Select lang</option>`;
+    new_category_lang_selector.innerHTML=`<option value="default" selected disabled data-traduction="dashboard.categories.select_lang">Select lang</option>`;
     for (let el of langs_list.data){
         new_category_lang_selector.innerHTML+=`<option value="${el.lang.code}">${el.lang.name} (${el.lang.code})</option>`
     }

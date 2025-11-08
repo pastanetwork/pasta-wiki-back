@@ -1,6 +1,6 @@
 {
-  "name": "pasta-wiki-api",
-  "version": "0.2.29",
+  "name": "pasta-wiki-manager",
+  "version": "0.2.30",
   "description": "",
   "main": "server.js",
   "scripts": {
