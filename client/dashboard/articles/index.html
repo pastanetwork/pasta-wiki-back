@@ -13,10 +13,10 @@
         <div id="articles-upper-comp">
             <nav id="articles-nav-bar">
                 <hr>
-                <h2>Articles</h2>
+                <h2 data-traduction="dashboard.articles">Articles</h2>
                 <hr>
                 <h2>
-                    <a href="/dashboard/categories">Categories</a>    
+                    <a href="/dashboard/categories" data-traduction="dashboard.categories">Categories</a>    
                 </h2>
                 <hr>
             </nav>
@@ -24,10 +24,10 @@
                 <hr>
                 <div>
                     <select id="articles-upper-comp-toolbar-new-article-category">
-                        <option value="default" selected disabled>Select category</option>
+                        <option value="default" selected disabled data-traduction="dashboard.articles.select_category">Select category</option>
                     </select>
                     <input id="articles-upper-comp-toolbar-new-article-title" type="text" placeholder="Article title">
-                    <button id="articles-upper-comp-toolbar-new-article-send">New article</button>
+                    <button id="articles-upper-comp-toolbar-new-article-send" data-traduction="dashboard.articles.new_article"></button>>New article</button>
                 </div>
                 <hr>
                 <div id="articles-list-tools">
@@ -46,12 +46,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Lang code</th>
-                        <th scope="col">Category</th>
+                        <th scope="col" data-traduction="dashboard.articles.table.title">Title</th>
+                        <th scope="col" data-traduction="dashboard.articles.table.lang_code">Lang code</th>
+                        <th scope="col" data-traduction="dashboard.articles.table.category">Category</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
-                        <th scope="col">Enabled</th>
+                        <th scope="col" data-traduction="dashboard.articles.table.enabled">Enabled</th>
                     </tr>
                 </thead>
                 <tbody id="articles-list-holder">
