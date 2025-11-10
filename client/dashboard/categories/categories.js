@@ -23,7 +23,6 @@ async function refreshLangs() {
     for (let el of langs_list.data){
         new_category_lang_selector.innerHTML+=`<option value="${el.lang.code}">${el.lang.name} (${el.lang.code})</option>`
     }
-
 }
 
 async function refreshCategories(){

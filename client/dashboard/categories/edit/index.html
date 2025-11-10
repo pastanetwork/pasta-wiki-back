@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template - Pastanetwork Wiki Backend</title>
+    <link rel="stylesheet" href="/public/global.css">
+    <link rel="stylesheet" href="/dashboard/categories/edit/edit.css">
+</head>
+<body>
+    <header class="flex-al-it-center"></header>
+    <div id="category-edit-menu-comp">
+		<p id="category-edit-back"><a href="/dashboard/categories" data-traduction="dashboard.categories.edit.return_to_category_list">Return to category section</a></p>
+        <h2><span id="category-edit-title"></span> (<span id="category-edit-lang"></span>)</h2>
+        <div id="category-edit-menu">
+			<select id="category-edit-select-lang"></select>
+			<input type="text" placeholder="New title" id="category-edit-new-title-input">
+			<button id="category-edit-send-modify" data-traduction="dashboard.categories.edit.update_category">Update category</button>
+        </div>
+    </div>
+    <main>
+
+    </main>
+    <footer></footer>
+    <script src="/public/global.js" type="module" defer></script>
+    <script src="/dashboard/categories/edit/edit.js" type="module" defer></script>
+</body>
+</html>

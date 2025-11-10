@@ -47,7 +47,7 @@ router.use('/connect', express.static(path.join(__dirname, 'connect')));
 
 const categories = [
   { name: 'dashboard', perm: 1 },
-  { name: 'administration', perm: 2 },
+  { name: 'administration', perm: 10 },
   { name: 'public', perm: 0 },
   //{ name: 'test', perm: 0 }
 ];

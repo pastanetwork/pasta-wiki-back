@@ -1,4 +1,4 @@
-import { fetchData } from "/public/global.js"
+import { fetchData, updateLang } from "/public/global.js"
 
 const editor = document.getElementById('editor');
 const preview = document.getElementById('preview');
@@ -26,12 +26,11 @@ let article_vals = {
 async function refreshData() {
     articles_list = await fetchData("/api/v1/articles/all");
     categories_list = await fetchData("/api/v1/categories/all");
-    await refreshArticle();
-    await refreshCategories();
+    refreshArticle();
+    refreshCategories();
 }
 await refreshData();
-
-async function refreshArticle(){
+function refreshArticle(){
     for (let el of articles_list.data){
         if ((urlParams.get('category') === el.category_urlized) && (urlParams.get('article') === el.title_urlized)) {
             editor.value=el.content;
@@ -50,7 +49,7 @@ async function refreshArticle(){
     }
 }
 
-async function refreshCategories(){
+function refreshCategories(){
     let select_assign_category_dom=`<option value="none" ${article_vals.category==="none" ? "selected" : ""}>none</option>\n`
     for (let el of categories_list.data){
         select_assign_category_dom+=`<option value="${el.title}" ${article_vals.category===el.title ? "selected" : ""}>${el.title}</option>\n`
@@ -107,10 +106,6 @@ async function updateArticleCategoryAndTitle(){
     if (new_title!==""){
         article_vals.title = new_title;
     }
-
-    console.log(article_vals)
-
-    //const update_response = await sendPostUpdate();
     await sendPostUpdate();
     window.location.replace(`/dashboard/articles/edit?category=${URLize(article_vals.category)}&article=${URLize(article_vals.title)}`);
 
