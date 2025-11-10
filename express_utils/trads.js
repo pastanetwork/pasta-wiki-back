@@ -1,7 +1,8 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-const client_langs = {};
+const client_translations = {};
+const client_langs = [];
 
 async function importsClientLangs() {
     const folderPath = path.join(__dirname, '/client-langs');
@@ -12,21 +13,21 @@ async function importsClientLangs() {
     
     await Promise.all(jsonFiles.map(async (file) => {
         const filePath = path.join(folderPath, file);
+        client_langs.push(file.split(".json")[0])
         const fileContent = await fs.readFile(filePath, 'utf8');
         const fileName = path.basename(file, '.json');
         langData[fileName] = JSON.parse(fileContent);    
     }));
-    
-    Object.keys(client_langs).forEach(key => delete client_langs[key]);
+    Object.keys(client_translations).forEach(key => delete client_translations[key]);
     
     for (const [lang, translations] of Object.entries(langData)) {
         for (const [key, value] of Object.entries(translations)) {
-            if (!client_langs[key]) {
-                client_langs[key] = {};
+            if (!client_translations[key]) {
+                client_translations[key] = {};
             }
-            client_langs[key][lang] = value;
+            client_translations[key][lang] = value;
         }
     }
 }
 
-module.exports = { importsClientLangs, client_langs }
+module.exports = { importsClientLangs, client_translations, client_langs }

@@ -22,9 +22,12 @@ header{
     background-color: black;
     position: sticky;
     top:0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-header a{
+header div a{
     color: white;
     text-decoration: none;
 }
@@ -36,5 +39,25 @@ header a{
 
 #pasta-logo-header{
     height: 50px;
-    width: 50px;
+    width : 50px;
+}
+
+#user-logo-header{
+    height: 40px;
+    width : 40px;
+}
+
+#header-comp-right{
+    margin-right: 25px;
+    width: 276px;
+    justify-content: space-between;
+}
+
+#header-lang-flag{
+    width: 40px;
+    height: 30px;
+}
+
+#header-select-lang{
+    margin-left: 10px;
 }
