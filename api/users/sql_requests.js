@@ -111,9 +111,23 @@ async function setDefinitiveDB(user_id){
     try {
         const result = await pool.query(query, [user_id]);
         if (result.rowCount > 0) {
-        return { code: 200, data: 'Success' };
+            return { code: 200, data: 'Success' };
         } else {
-        return { code: 404, data: 'Not found' };
+            return { code: 404, data: 'Not found' };
+        }
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
+
+async function getDefinitiveDB(user_id){
+    const query = "SELECT definitive FROM users.users WHERE user_id = $1";
+    try {
+        const result = await pool.query(query, [user_id]);
+        if (result.rowCount > 0) {
+            return { code: 200, data: result };
+        } else {
+            return { code: 404, data: 'Not found' };
         }
     } catch (error) {
         return { code: 500, data: error };
@@ -125,9 +139,9 @@ async function setApprovedDB(user_id,status){
     try {
         const result = await pool.query(query, [status,user_id]);
         if (result.rowCount > 0) {
-        return { code: 200, data: 'Success' };
+            return { code: 200, data: 'Success' };
         } else {
-        return { code: 404, data: 'Not found' };
+            return { code: 404, data: 'Not found' };
         }
     } catch (error) {
         return { code: 500, data: error };
@@ -135,4 +149,4 @@ async function setApprovedDB(user_id,status){
 }
 
 
-module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, setApprovedDB, }
+module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, }

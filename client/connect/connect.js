@@ -165,12 +165,13 @@ function updateStep(){
             const qrImg = document.createElement('img');
             qrImg.src = "/api/v1/users/qrcode-2fa";
             qrImg.alt = "QR Code for 2FA setup";
-            
-            qrImg.onerror = function() {
-                window.location.replace("/connect");
-            };
             qr_code_holder.innerHTML='';
-            qr_code_holder.appendChild(qrImg);
+            qrImg.onerror = function() {
+                return;
+            };
+            qrImg.onload = function() {
+                qr_code_holder.appendChild(qrImg);
+            }
         break;
     }
     updateLang();

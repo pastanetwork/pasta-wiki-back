@@ -5,7 +5,7 @@ const QRCode = require('qrcode');
 const { v4: uuidv4 } = require('uuid');
 
 const { registerSchema } = require("./joi-schemas");
-const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, setApprovedDB, } = require("./sql_requests");
+const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, } = require("./sql_requests");
 const { jwt_values } = require("../../express_utils/env-values-dictionnary");
 const { encrypt, decrypt} = require("../../express_utils/encryption");
 
@@ -131,6 +131,10 @@ class User {
     }
 
     async generateQRcode2FA() {
+        const is_definitive = await getDefinitiveDB(this.user_id);
+        if (!is_definitive.code===200 || (is_definitive.code===200 && is_definitive.data)){
+            return {ok:false};
+        }
         const secret = await getSecret2FA(this.user_id);
         if (secret.code!==200){
             return {ok:false};
