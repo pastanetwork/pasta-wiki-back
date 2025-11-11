@@ -4,7 +4,6 @@ body{
     align-items: center;
 }
 main{
-    padding-top: 20px;
     width: 80%;
     background-color: rgba(0, 0, 0, 0.3);
     display: flex;

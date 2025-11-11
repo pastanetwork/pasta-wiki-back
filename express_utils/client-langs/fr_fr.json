@@ -30,5 +30,19 @@
 	"dashboard.categories.table.lang": "Langue",
 	"dashboard.categories.table.title": "Titre",
 	"dashboard.edit.articles": "Éditer les articles",
-	"dashboard.edit.categories": "Éditer les catégories"
+	"dashboard.edit.categories": "Éditer les catégories",
+	"profil.account.at": "à",
+	"profil.account.created_at": "Compte créé le",
+	"utils.months.april": "Avril",
+	"utils.months.august": "Août",
+	"utils.months.december": "Décembre",
+	"utils.months.february": "Février",
+	"utils.months.january": "Janvier",
+	"utils.months.july": "Juillet",
+	"utils.months.june": "Juin",
+	"utils.months.march": "Mars",
+	"utils.months.may": "Mai",
+	"utils.months.november": "Novembre",
+	"utils.months.october": "Octobre",
+	"utils.months.september": "Septembre"
 }

@@ -148,5 +148,22 @@ async function setApprovedDB(user_id,status){
     }
 }
 
+async function getUserInfos(user_id){
+    const query = "SELECT username, email, created_at, r.name as role FROM users.users u LEFT JOIN perms.roles r ON u.role_id = r.id WHERE user_id = $1"
+    try {
+        const result = await pool.query(query, [user_id]);
+        if (result.rowCount > 0) {
+            return { code: 200, data: result.rows[0] };
+        } else {
+            return { code: 404, data: 'Not found' };
+        }
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
 
-module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, }
+async function getUserConnectionLogs(user_id){
+
+}
+
+module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB,  getUserInfos, }

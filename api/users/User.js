@@ -5,7 +5,7 @@ const QRCode = require('qrcode');
 const { v4: uuidv4 } = require('uuid');
 
 const { registerSchema } = require("./joi-schemas");
-const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, } = require("./sql_requests");
+const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, getUserInfos, } = require("./sql_requests");
 const { jwt_values } = require("../../express_utils/env-values-dictionnary");
 const { encrypt, decrypt} = require("../../express_utils/encryption");
 
@@ -203,6 +203,24 @@ class User {
         } else {
             return {ok:false}
         }
+    }
+
+    async getUserInfo(){
+        const result = await getUserInfos(this.user_id);
+        if (result.code !== 200){
+            if (result.code === 404){
+                return {code:404,msg:"User not found"}
+            } else {
+                return db_error
+            }
+        }
+        const send_data = {
+            username:result.data.username,
+            email:result.data.email,
+            created_at:result.data.created_at,
+            role:result.data.role
+        }
+        return {code:200,msg:send_data}
     }
 }
 

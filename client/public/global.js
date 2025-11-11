@@ -5,7 +5,7 @@ const icons = {
 }
 
 const header = document.querySelector("header")
-header.innerHTML=`<div class='flex-al-it-center'><a href='/' class='flex-al-it-center'><img id='pasta-logo-header' src='/public/pasta_logo.svg' alt='Logo Pastanetwork'><h1>Pastanetwork Wiki Manager</h1></a></div><div class='flex-al-it-center' id='header-comp-right'><div class="flex-al-it-center"><div id="header-lang-flag-holder"><img id="header-lang-flag" src="https://flagicons.lipis.dev/flags/4x3/${lang.split("_")[1]}.svg" alt="${lang} flag"/></div><select id="header-select-lang"></select></div>${icons.user}</div>`
+header.innerHTML=`<div class='flex-al-it-center'><a href='/' class='flex-al-it-center'><img id='pasta-logo-header' src='/public/pasta_logo.svg' alt='Logo Pastanetwork'><h1>Pastanetwork Wiki Manager</h1></a></div><div class='flex-al-it-center' id='header-comp-right'><div class="flex-al-it-center"><div id="header-lang-flag-holder"><img id="header-lang-flag" src="https://flagicons.lipis.dev/flags/4x3/${lang.split("_")[1]}.svg" alt="${lang} flag"/></div><select id="header-select-lang"></select></div><a href="/profil">${icons.user}</a></div>`
 
 const select_lang_menu = document.getElementById("header-select-lang");
 

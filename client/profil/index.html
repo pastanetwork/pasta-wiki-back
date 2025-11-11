@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Pastanetwork Wiki Backend</title>
+    <link rel="stylesheet" href="/public/global.css">
+    <link rel="stylesheet" href="/profil/profil.css">
+</head>
+<body>
+    <header class="flex-al-it-center"></header>
+    <main>
+        <nav class="flex-al-it-center">
+            <hr>
+            <h2>Profil informations</h2>
+            <hr>
+            <h2><a href="/profil/connect-logs">Connection logs</a></h2>
+            <hr>
+        </nav>
+        <div>
+            <p id="profil-username"></p>
+            <p id="profil-email"></p>
+            <p id="profil-role"></p>
+            <p><span data-traduction="profil.account.created_at">Account created at</span> <span id="profil-created-at"></span></p>
+
+        </div>
+    </main>
+    <footer></footer>
+    <script src="/public/global.js" type="module" defer></script>
+    <script src="/profil/profil.js" type="module" defer></script>
+</body>
+</html>

@@ -49,6 +49,7 @@ const categories = [
   { name: 'dashboard', perm: 1 },
   { name: 'administration', perm: 10 },
   { name: 'public', perm: 0 },
+  { name: 'profil', perm: 1 },
   //{ name: 'test', perm: 0 }
 ];
 

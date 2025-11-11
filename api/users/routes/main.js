@@ -106,4 +106,18 @@ router.post("/verify-code-2fa", async (req,res)=>{
     return res.status(200).json({data:"OK"}).end();
 });
 
+router.get("/get-infos", async(req,res)=>{
+    const data = checkJWT(req.cookies.authToken);
+    if (!data.ok){
+        return res.status(401).end();
+    }
+    const userdata = {
+        email:data.user.email,
+        user_id:data.user.user_id
+    }
+    const user = new User(userdata);
+    const result = await user.getUserInfo();
+    return res.status(result.code).json(result).end();
+});
+
 module.exports = router;
