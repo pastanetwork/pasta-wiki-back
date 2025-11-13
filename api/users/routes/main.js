@@ -3,7 +3,7 @@ const { Router } = require("express");
 const router = Router();
 
 const User = require("../User")
-const { checkJWT } = require("../../../express_utils/utils")
+const { checkJWT, verifPerm } = require("../../../express_utils/utils")
 
 router.post("/register",async (req,res)=>{
 
@@ -132,6 +132,14 @@ router.get("/get-connect-logs", async(req,res)=>{
     const user = new User(userdata);
     const result = await user.getConnectLogs();
     return res.status(result.code).json(result).end();
+});
+
+router.get("/is-admin", async (req,res)=>{
+    const hasPermission = await verifPerm(req.cookies.authToken, 10);
+      if (!hasPermission) {
+        return res.status(403).sendFile('403.html', {root: __dirname});
+      }
+      return res.status(200).end();
 });
 
 module.exports = router;

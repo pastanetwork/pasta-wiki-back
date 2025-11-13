@@ -47,6 +47,11 @@ header div a{
     width : 40px;
 }
 
+#administration-logo-header{
+    height: 36px;
+    width : 36px;
+}
+
 #header-comp-right{
     margin-right: 25px;
     width: 276px;
@@ -60,4 +65,10 @@ header div a{
 
 #header-select-lang{
     margin-left: 10px;
+}
+
+#header-icons-nav{
+    display: flex;
+    align-items: center;
+    gap: 40px;
 }
