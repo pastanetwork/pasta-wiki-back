@@ -116,7 +116,21 @@ router.get("/get-infos", async(req,res)=>{
         user_id:data.user.user_id
     }
     const user = new User(userdata);
-    const result = await user.getUserInfo();
+    const result = await user.getInfos();
+    return res.status(result.code).json(result).end();
+});
+
+router.get("/get-connect-logs", async(req,res)=>{
+    const data = checkJWT(req.cookies.authToken);
+    if (!data.ok){
+        return res.status(401).end();
+    }
+    const userdata = {
+        email:data.user.email,
+        user_id:data.user.user_id
+    }
+    const user = new User(userdata);
+    const result = await user.getConnectLogs();
     return res.status(result.code).json(result).end();
 });
 

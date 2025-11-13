@@ -5,7 +5,7 @@ const QRCode = require('qrcode');
 const { v4: uuidv4 } = require('uuid');
 
 const { registerSchema } = require("./joi-schemas");
-const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, getUserInfos, } = require("./sql_requests");
+const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, getUserInfos, getUserConnectionLogs } = require("./sql_requests");
 const { jwt_values } = require("../../express_utils/env-values-dictionnary");
 const { encrypt, decrypt} = require("../../express_utils/encryption");
 
@@ -205,7 +205,7 @@ class User {
         }
     }
 
-    async getUserInfo(){
+    async getInfos(){
         const result = await getUserInfos(this.user_id);
         if (result.code !== 200){
             if (result.code === 404){
@@ -219,6 +219,28 @@ class User {
             email:result.data.email,
             created_at:result.data.created_at,
             role:result.data.role
+        }
+        return {code:200,msg:send_data}
+    }
+
+    async getConnectLogs(){
+        const result =await getUserConnectionLogs(this.user_id);
+        if (result.code !== 200){
+            if (result.code === 404){
+                return {code:404,msg:"User not found"}
+            } else {
+                return db_error
+            }
+        }
+        let send_data = []
+        for (let el of result.data){
+            send_data.push({
+            email:el.email,
+            user_agent:el.user_agent,
+            ip:el.ip,
+            date:el.date,
+            status:el.status,
+        })
         }
         return {code:200,msg:send_data}
     }
