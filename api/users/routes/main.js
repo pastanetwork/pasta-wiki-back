@@ -137,7 +137,7 @@ router.get("/get-connect-logs", async(req,res)=>{
 router.get("/is-admin", async (req,res)=>{
     const hasPermission = await verifPerm(req.cookies.authToken, 10);
       if (!hasPermission) {
-        return res.status(403).sendFile('403.html', {root: __dirname});
+        return res.status(403).end();
       }
       return res.status(200).end();
 });

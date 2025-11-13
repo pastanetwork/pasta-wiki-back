@@ -27,7 +27,7 @@ header{
     justify-content: space-between;
 }
 
-header div a{
+header div a, #header-icons-nav a{
     color: white;
     text-decoration: none;
 }
@@ -36,6 +36,8 @@ header div a{
     display: flex;
     align-items: center;
 }
+
+/* --- SVG ICONS --- */
 
 #pasta-logo-header{
     height: 50px;
@@ -47,28 +49,85 @@ header div a{
     width : 40px;
 }
 
+#articles-logo-header{
+    height: 36px;
+    width : 36px;
+}
+
+#categories-logo-header{
+    height: 40px;
+    width : 40px;
+}
+
 #administration-logo-header{
     height: 36px;
     width : 36px;
 }
 
-#header-comp-right{
-    margin-right: 25px;
-    width: 276px;
-    justify-content: space-between;
+#home-logo-header{
+    height: 40px;
+    width : 40px;
 }
 
-#header-lang-flag{
+.header-lang-flag{
     width: 40px;
     height: 30px;
+    border-radius: 2px;
 }
 
-#header-select-lang{
-    margin-left: 10px;
+/* --- Menu bar --- */
+
+#header-menu-bar{
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    margin: 0px 20px;
 }
 
 #header-icons-nav{
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 13px;
+}
+
+#header-lang-selector{
+    border: 2px solid rgba(63,63,63,0.5);
+    border-radius: 5px;
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 5px;
+    cursor: pointer;
+}
+
+#lang-dropdwon-menu-comp{
+    position: fixed;
+    top:80px;
+    width: 82px;
+    right: 268px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    transition: 0.5s height;
+    background-color: black;
+}
+
+#lang-dropdwon-menu-comp[data-opened="true"]{
+    height: 90px;
+    border: 1px solid rgba(63,63,63,0.5);
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+#lang-dropdwon-menu-comp[data-opened="false"]{
+    height: 0px;
+}
+
+.header-lang-dropdown-element{
+    display: flex;
+    justify-content: center;
+    border: 1px solid rgba(63,63,63,0.5);
+    border-radius: 5px;
+    padding: 5px 0px;
+    cursor: pointer;
 }
