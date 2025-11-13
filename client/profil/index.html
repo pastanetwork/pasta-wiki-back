@@ -10,19 +10,72 @@
 <body>
     <header class="flex-al-it-center"></header>
     <main>
-        <nav class="flex-al-it-center">
-            <hr>
-            <h2>Profil informations</h2>
-            <hr>
-            <h2><a href="/profil/connect-logs">Connection logs</a></h2>
-            <hr>
-        </nav>
         <div>
-            <p id="profil-username"></p>
-            <p id="profil-email"></p>
-            <p id="profil-role"></p>
-            <p><span data-traduction="profil.account.created_at">Account created at</span> <span id="profil-created-at"></span></p>
+            <section>
+                <h2>Profil informations :</h2>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th spec="col">Username :</th>
+                            <td id="profil-username"></td>
+                        </tr>
+                        <tr>
+                            <th spec="col">Email :</th>
+                            <td id="profil-email"></td>
+                        </tr>
+                        <tr>
+                            <th spec="col">Role :</th>
+                            <td id="profil-role"></td>
+                        </tr>
+                        <tr>
+                            <th spec="col" data-traduction="profil.account.created_at">Created :</th>
+                            <td id="profil-created-at"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+            </section>
+            <section>
+                <h2>Profil edition:</h2>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th spec="col">Username :</th>
+                            <td><input type="text" placeholder="username_15"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th spec="col">Email :</th>
+                            <td><input type="text" placeholder="username_15@email.com"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th spec="col">New password :</th>
+                            <td><input type="password"></td>
+                            <td><button aria-label="Show new password confirmation">Show</button></td>
+                        </tr>
+                        <tr>
+                            <th spec="col">Confirm password :</th>
+                            <td><input type="password"></td>
+                            <td><button aria-label="Show new password confirmation">Show</button></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><p style="max-width: 369px;text-wrap: wrap;">You will see the log here.</p></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><button>Confirm changes</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+            </section>
+            <section>
+                <h2>Connection logs :</h2>
+                <table>
 
+                </table>
+                <hr>
+            </section>
         </div>
     </main>
     <footer></footer>

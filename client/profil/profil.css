@@ -15,18 +15,34 @@ main{
 
 h2{
     font-size: 2em;
+    text-decoration: underline;
 }
 
-nav{
-    justify-content: space-between;
-    width: 650px;
+section{
+    margin: 0px 50px;
+    padding: 20px 15px;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
-nav hr{
-    height: 50px;
-    width: 3px;
+section hr{
+    margin-top: 20px;
 }
 
-a{
-    color: white;
+th{
+    min-width: 200px;
+    text-align: justify;
+}
+
+td, th{
+    margin: 5px 0px;
+    height: 100%;
+    border-bottom: solid 1px rgb(127,127,127);
+}
+
+input{
+    height: 30px;
+}
+
+td button{
+    width: 100%;
 }
