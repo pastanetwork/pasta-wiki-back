@@ -94,16 +94,21 @@ async function sendProfilModification(){
             })
         })
         if (update_response.ok){
-            refreshData();
             profil_modif_log.dataset.traduction="profil.edit.log_updated_ok"
             updateLang();
         }
     } catch (error){
         profil_modif_log.innerText=error;
     } finally {
-        user_data.username="";
-        user_data.email="";
-        user_data.password="";
+        user_data = {
+            username:"",
+            prev_username:"",
+            email:"",
+            prev_email:"",
+            password:"",
+            code_2fa:"",
+        };
+        refreshData();
     }
 }
 
@@ -171,6 +176,9 @@ send_profil_modif_btn.addEventListener("click",async function(){
         user_data.code_2fa=code_2fa_input.value;
         await sendProfilModification();
         setAlertOpened(false,"");
-        user_data.code_2fa="";
+        edit_username_input.value="";
+        edit_email_input.value="";
+        edit_password_input.value="";
+        edit_password_confirm_input.value="";
     })
 })
