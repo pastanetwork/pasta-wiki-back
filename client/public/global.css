@@ -75,6 +75,10 @@ header div a, #header-icons-nav a{
     border-radius: 2px;
 }
 
+.header-menu-icon:hover{
+    color: rgb(191,191,191);
+}
+
 /* --- Menu bar --- */
 
 #header-menu-bar{
@@ -99,6 +103,10 @@ header div a, #header-icons-nav a{
     justify-content: space-around;
     padding: 5px;
     cursor: pointer;
+}
+
+#header-lang-selector:hover{
+    background-color: rgb(31,31,31);
 }
 
 #lang-dropdwon-menu-comp{
@@ -130,4 +138,8 @@ header div a, #header-icons-nav a{
     border-radius: 5px;
     padding: 5px 0px;
     cursor: pointer;
+}
+
+.header-lang-dropdown-element:hover{
+    background-color: rgb(31,31,31);
 }
