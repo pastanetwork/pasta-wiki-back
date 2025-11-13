@@ -16,6 +16,7 @@ main{
 h2{
     font-size: 2em;
     text-decoration: underline;
+    margin-bottom: 20px;
 }
 
 section{
@@ -108,4 +109,9 @@ td button{
     border-width: 10px;
     border-color: rgb(20,20,20);
     background-color: rgba(63, 63, 63, 0.5);
+}
+
+#disconnect-user{
+    font-size: 1em;
+    padding: 5px;
 }

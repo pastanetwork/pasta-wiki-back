@@ -12,6 +12,8 @@ const edit_password_confirm_input = document.getElementById("profil-edit-passwor
 const send_profil_modif_btn = document.getElementById("send-profil-modif");
 const profil_modif_log = document.getElementById("profil-modif-log");
 
+const disconnect_btn = document.getElementById("disconnect-user");
+
 let user_data = {
     username:"",
     prev_username:"",
@@ -171,7 +173,10 @@ send_profil_modif_btn.addEventListener("click",async function(){
 
     confirm_action.addEventListener("click",async function(){
         if (code_2fa_input.value===""){
-            return
+            return;
+        }
+        if (!/^\d{6}$/.test(code) || !/^\d+$/.test(code)){
+            return;
         }
         user_data.code_2fa=code_2fa_input.value;
         await sendProfilModification();
@@ -181,4 +186,9 @@ send_profil_modif_btn.addEventListener("click",async function(){
         edit_password_input.value="";
         edit_password_confirm_input.value="";
     })
+})
+
+disconnect_btn.addEventListener("click",async function(){
+    await fetch("/api/v1/users/delete-auth-cookie");
+    window.location.replace("/connect");
 })

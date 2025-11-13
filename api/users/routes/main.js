@@ -163,4 +163,14 @@ router.get("/is-admin", async (req,res)=>{
       return res.status(200).end();
 });
 
+router.get("/delete-auth-cookie",async (req,res)=>{
+    res.cookie('authToken', "", {
+        httpOnly: true,
+        secure : true,
+        sameSite : 'strict',
+        maxAge : 0
+    });
+    return res.status(200).end();
+})
+
 module.exports = router;
