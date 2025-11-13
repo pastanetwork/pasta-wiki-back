@@ -134,6 +134,21 @@ router.get("/get-connect-logs", async(req,res)=>{
     return res.status(result.code).json(result).end();
 });
 
+router.put("/modify", async(req,res)=>{
+    const data = checkJWT(req.cookies.authToken);
+    if (!data.ok){
+        return res.status(401).end();
+    }
+    const { username, email, password } = req.body;
+    const userdata = {
+        email:data.user.email,
+        user_id:data.user.user_id
+    }
+    const user = new User(userdata);
+    const result = await user.modify(username,email,password);
+    return res.status(result.code).json(result).end();
+});
+
 router.get("/is-admin", async (req,res)=>{
     const hasPermission = await verifPerm(req.cookies.authToken, 10);
       if (!hasPermission) {

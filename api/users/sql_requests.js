@@ -176,4 +176,34 @@ async function getUserConnectionLogs(user_id){
     }
 }
 
-module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB,  getUserInfos, getUserConnectionLogs, }
+async function updateUsername(user_id,username) {
+    const query = "UPDATE users.users SET username = $2 WHERE user_id = $1"
+    try{
+        const result= await pool.query(query,[user_id,username])
+        return { code: 200, data: 'Success' };
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
+
+async function updateEmail(user_id,email) {
+    const query = "UPDATE users.users SET email = $2 WHERE user_id = $1"
+    try{
+        const result= await pool.query(query,[user_id,email])
+        return { code: 200, data: 'Success' };
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
+
+async function updatePassword(user_id,password) {
+    const query = "UPDATE users.users SET password = $2 WHERE user_id = $1"
+    try{
+        const result= await pool.query(query,[user_id,password])
+        return { code: 200, data: 'Success' };
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
+
+module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB,  getUserInfos, getUserConnectionLogs, updateUsername, updateEmail, updatePassword, }

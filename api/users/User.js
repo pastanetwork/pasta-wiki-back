@@ -4,8 +4,8 @@ const twofactor = require('node-2fa');
 const QRCode = require('qrcode');
 const { v4: uuidv4 } = require('uuid');
 
-const { registerSchema } = require("./joi-schemas");
-const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, getUserInfos, getUserConnectionLogs } = require("./sql_requests");
+const { registerSchema, usernameSchema, emailSchema, passwordSchema } = require("./joi-schemas");
+const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, getUserInfos, getUserConnectionLogs, updateUsername, updateEmail, updatePassword, } = require("./sql_requests");
 const { jwt_values } = require("../../express_utils/env-values-dictionnary");
 const { encrypt, decrypt} = require("../../express_utils/encryption");
 
@@ -243,6 +243,46 @@ class User {
         })
         }
         return {code:200,msg:send_data}
+    }
+
+    async modify(new_username,new_email,new_password){
+        if (new_username !==""){
+            try {
+                await usernameSchema.validateAsync({username:new_username});
+            } catch (error) {
+                return {msg:`Error : Invalid inputs.\n${error.details[0].message}`,code:400};
+            }
+            const result = await updateUsername(this.user_id,new_username);
+            if (result.code !== 200){
+                return db_error;
+            }
+        }
+
+        if (new_email !== ""){
+            try {
+                await emailSchema.validateAsync({email:new_email});
+            } catch (error) {
+                return {msg:`Error : Invalid inputs.\n${error.details[0].message}`,code:400};
+            }
+            const result = await updateEmail(this.user_id,new_email);
+            if (result.code !== 200){
+                return db_error;
+            }
+        }
+
+        if (new_password !== ""){
+            try {
+                await passwordSchema.validateAsync({password:new_password});
+            } catch (error) {
+                return {msg:`Error : Invalid inputs.\n${error.details[0].message}`,code:400};
+            }
+            const result = await updatePassword(this.user_id,await argon2.hash(new_password));
+            if (result.code !== 200){
+                return db_error;
+            }
+        }
+
+        return ({code:200,msg:"User modified successfully"})
     }
 }
 
