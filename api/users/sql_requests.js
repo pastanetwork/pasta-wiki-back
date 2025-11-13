@@ -163,7 +163,7 @@ async function getUserInfos(user_id){
 }
 
 async function getUserConnectionLogs(user_id){
-    const query = "SELECT email, user_agent, ip, status FROM users.connexion_logs WHERE user_id = $1"
+    const query = "SELECT email, user_agent, ip, status, date FROM users.connexion_logs WHERE user_id = $1"
     try {
         const result = await pool.query(query, [user_id]);
         if (result.rowCount > 0) {

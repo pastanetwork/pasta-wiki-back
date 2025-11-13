@@ -60,7 +60,7 @@
                             <td><button aria-label="Show new password confirmation">Show</button></td>
                         </tr>
                         <tr>
-                            <td colspan="3"><p style="max-width: 369px;text-wrap: wrap;">You will see the log here.</p></td>
+                            <td colspan="3"><p id="profil-modif-log">You will see the log here.</p></td>
                         </tr>
                         <tr>
                             <td colspan="3"><button>Confirm changes</button></td>
@@ -71,8 +71,19 @@
             </section>
             <section>
                 <h2>Connection logs :</h2>
-                <table>
+                <table id="connect-log-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Email Connection</th>
+                            <th scope="col">User-Agent</th>
+                            <th scope="col">IP address</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Connection Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="connect-log-tbody">
 
+                    </tbody>
                 </table>
                 <hr>
             </section>

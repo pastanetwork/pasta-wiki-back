@@ -46,3 +46,12 @@ input{
 td button{
     width: 100%;
 }
+
+#profil-modif-log{
+    max-width: 369px;
+    text-wrap: wrap;
+}
+
+#connect-log-table{
+    width: 100%;
+}
