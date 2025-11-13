@@ -264,6 +264,10 @@ class User {
             } catch (error) {
                 return {msg:`Error : Invalid inputs.\n${error.details[0].message}`,code:400};
             }
+            const email_exist_obj = await verifyEmailDB(new_email);
+            if (email_exist_obj.code===500){
+                return db_error;
+            }
             const result = await updateEmail(this.user_id,new_email);
             if (result.code !== 200){
                 return db_error;

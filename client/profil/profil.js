@@ -17,7 +17,8 @@ let user_data = {
     prev_username:"",
     email:"",
     prev_email:"",
-    password:""
+    password:"",
+    code_2fa:"",
 };
 
 async function refreshData(){
@@ -33,8 +34,6 @@ async function refreshData(){
     display_email.innerText = userdata.email;
     display_creation_time.innerHTML = converTime(userdata.created_at);
     display_role.innerText = userdata.role;
-    edit_username_input.value=userdata.username;
-    edit_email_input.value=userdata.email;
 
     user_data.prev_username = userdata.username;
     user_data.prev_email = userdata.email;
@@ -42,7 +41,11 @@ async function refreshData(){
     const logs_tbody = document.getElementById("connect-log-tbody");
     logs_tbody.innerHTML="";
     
-    for (let i of connection_logs.msg) {
+    const sorted_list = connection_logs.msg.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+    });
+
+    for (let i of sorted_list) {
         const tr_tag = document.createElement("tr");
         //tr_tag.classList.add("");
         logs_tbody.appendChild(tr_tag);
@@ -66,14 +69,6 @@ async function sendProfilModification(){
 
     let abort = false;
 
-    if (new_username.length<=4){
-        profil_modif_log.dataset.traduction="profil.edit.username_length";
-        abort=true;
-    }
-    if (new_email.length <= 0){
-        profil_modif_log.dataset.traduction="profil.edit.email_empty";
-        abort=true;
-    }
     if (new_password !== confirm_new_password){
         profil_modif_log.dataset.traduction="profil.edit.passwords_not_match";
         abort=true;
@@ -94,7 +89,8 @@ async function sendProfilModification(){
             body: JSON.stringify({
                 username:user_data.username,
                 email:user_data.email,
-                password:user_data.password
+                password:user_data.password,
+                code_2fa:user_data.code_2fa,
             })
         })
         if (update_response.ok){
@@ -104,6 +100,22 @@ async function sendProfilModification(){
         }
     } catch (error){
         profil_modif_log.innerText=error;
+    } finally {
+        user_data.username="";
+        user_data.email="";
+        user_data.password="";
+    }
+}
+
+const alert_div = document.getElementById("profil-modif-confirm");
+
+function setAlertOpened(val,dom){
+    if (val){
+        alert_div.dataset.opened=true
+        alert_div.innerHTML=dom
+    } else {
+        alert_div.dataset.opened=false
+        alert_div.innerHTML=""
     }
 }
 
@@ -126,5 +138,39 @@ await refreshData();
 updateLang()
 
 send_profil_modif_btn.addEventListener("click",async function(){
-    await sendProfilModification();
+    setAlertOpened(true,`
+        <fieldset id="profil-modif-alert">
+            <h2>Confirm action</h2>
+            <hr>
+            <br>
+            <label for="verify2fa-code">Open your 2FA application and confirm the provided code</label>
+            <br>
+            <br>
+            <input type="number" min="0" max="999999" name="verify2fa-code" id="profil-modif-alert-2fa-code">
+            <br>
+            <br>
+            <div id="profil-modif-alert-btn-holder">
+                <button id="profil-modif-alert-undo-btn"><h3>Undo</h3></button>
+                <button id="profil-modif-alert-confirm-btn"><h3>Confirm</h3></button>
+            </div>
+        </fieldset>
+    `);
+    
+    const undo_action = document.getElementById("profil-modif-alert-undo-btn");
+    const confirm_action= document.getElementById("profil-modif-alert-confirm-btn");
+    const code_2fa_input= document.getElementById("profil-modif-alert-2fa-code");
+
+    undo_action.addEventListener("click",function(){
+        setAlertOpened(false,"")
+    })
+
+    confirm_action.addEventListener("click",async function(){
+        if (code_2fa_input.value===""){
+            return
+        }
+        user_data.code_2fa=code_2fa_input.value;
+        await sendProfilModification();
+        setAlertOpened(false,"");
+        user_data.code_2fa="";
+    })
 })

@@ -55,3 +55,57 @@ td button{
 #connect-log-table{
     width: 100%;
 }
+
+#profil-modif-confirm{
+    position: fixed;
+    top: 80px;
+    bottom: 80px;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(30, 20, 20, 0.8);
+}
+#profil-modif-confirm[data-opened=false]{
+    display: none;
+}
+
+#profil-modif-alert{
+    margin-bottom: 200px;
+    border-radius: 15px;
+    padding: 10px 15px;
+}
+
+#profil-modif-alert-btn-holder{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:15px
+}
+
+#profil-modif-alert-btn-holder button{
+    width: 100%;
+    padding: 15px 0px;
+    border-radius: 2%;
+    border: solid white 3px;
+    cursor: pointer;
+}
+
+#profil-modif-alert-confirm-btn{
+    background-color: rgba(124, 21, 21, 0.8);
+    color: white;
+}
+
+#profil-modif-confirm[data-opened=true]{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+#profil-modif-alert-delete{
+    height: 500px;
+    padding: 25px 50px;
+    border: solid;
+    border-radius: 4%;
+    border-width: 10px;
+    border-color: rgb(20,20,20);
+    background-color: rgba(63, 63, 63, 0.5);
+}

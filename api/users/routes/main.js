@@ -94,7 +94,7 @@ router.post("/verify-code-2fa", async (req,res)=>{
     const user = new User(userdata);
     const valid = await user.verify2FACode(code);
     if (!valid.ok){
-        return res.status(401).json({data:"Code not valid"}).end();
+        return res.status(401).json({data:"2FA code not valid"}).end();
     }
     const token = user.generateJWT();
     res.cookie('authToken', token, {
@@ -139,12 +139,18 @@ router.put("/modify", async(req,res)=>{
     if (!data.ok){
         return res.status(401).end();
     }
-    const { username, email, password } = req.body;
+    const { username, email, password, code_2fa } = req.body;
     const userdata = {
         email:data.user.email,
         user_id:data.user.user_id
     }
     const user = new User(userdata);
+    
+    const valid = await user.verify2FACode(code_2fa);
+    if (!valid.ok){
+        return res.status(401).json({data:"2FA code not valid"}).end();
+    }
+
     const result = await user.modify(username,email,password);
     return res.status(result.code).json(result).end();
 });
