@@ -1,4 +1,7 @@
 {
+	"administration.title.administration": "Administration",
+	"administration.title.roles": "Roles",
+	"administration.title.users": "Users",
 	"alert.button.confirm": "Confirm",
 	"alert.button.undo": "Undo",
 	"alert.delete.msg.action_will_delete": "This action will delete",
