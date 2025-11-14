@@ -12,23 +12,23 @@
     <main>
         <div>
             <section>
-                <h2>Profil informations :</h2>
+                <h2 data-traduction="profil.profil_informations">Profil informations :</h2>
                 <table>
                     <tbody>
                         <tr>
-                            <th spec="col">Username :</th>
+                            <th spec="col" data-traduction="profil.account.username">Username :</th>
                             <td id="profil-username"></td>
                         </tr>
                         <tr>
-                            <th spec="col">Email :</th>
+                            <th spec="col" data-traduction="profil.account.email">Email :</th>
                             <td id="profil-email"></td>
                         </tr>
                         <tr>
-                            <th spec="col">Role :</th>
+                            <th spec="col" data-traduction="profil.account.role">Role :</th>
                             <td id="profil-role"></td>
                         </tr>
                         <tr>
-                            <th spec="col" data-traduction="profil.account.created_at">Created :</th>
+                            <th spec="col" data-traduction="profil.account.created">Created :</th>
                             <td id="profil-created-at"></td>
                         </tr>
                     </tbody>
@@ -36,49 +36,49 @@
                 <hr>
             </section>
             <section>
-                <h2>Profil edition:</h2>
+                <h2 data-traduction="profil.profil_edition">Profil edition:</h2>
                 <table>
                     <tbody>
                         <tr>
-                            <th spec="col">New username :</th>
-                            <td><input type="text" id="profil-edit-username" placeholder="username_15"></td>
+                            <th spec="col" data-traduction="profil.edit.new_username">New username :</th>
+                            <td><input type="text" id="profil-edit-username" placeholder="pasta13680_chan"></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <th spec="col">New email :</th>
-                            <td><input type="text" id="profil-edit-email" placeholder="username_15@email.com"></td>
+                            <th spec="col" data-traduction="profil.edit.new_email">New email :</th>
+                            <td><input type="text" id="profil-edit-email" placeholder="pasta13chan@email.com"></td>
                             <td></td>
                         </tr>
                         <tr>
                             <th spec="col">New password :</th>
-                            <td><input id="profil-edit-password" type="password"></td>
+                            <td><input id="profil-edit-password" type="password" data-traduction="profil.edit.new_password"></td>
                             <td><button aria-label="Show new password confirmation">Show</button></td>
                         </tr>
                         <tr>
                             <th spec="col">Confirm password :</th>
-                            <td><input id="profil-edit-password-confirm" type="password"></td>
+                            <td><input id="profil-edit-password-confirm" type="password" data-traduction="profil.edit.confirm_password"></td>
                             <td><button aria-label="Show new password confirmation">Show</button></td>
                         </tr>
                         <tr>
                             <td colspan="3"><p id="profil-modif-log" data-traduction="profil.edit.log">You will see the log here.</p></td>
                         </tr>
                         <tr>
-                            <td colspan="3"><button id="send-profil-modif">Confirm changes</button></td>
+                            <td colspan="3"><button id="send-profil-modif" data-traduction="profil.edit.confirm">Confirm changes</button></td>
                         </tr>
                     </tbody>
                 </table>
                 <hr>
             </section>
             <section>
-                <h2>Connection logs :</h2>
+                <h2 data-traduction="profil.connection_logs">Connection logs :</h2>
                 <table id="connect-log-table">
                     <thead>
                         <tr>
-                            <th scope="col">Email Connection</th>
-                            <th scope="col">User-Agent</th>
-                            <th scope="col">IP address</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Connection Status</th>
+                            <th scope="col" data-traduction="profil.c_logs.email">Email Connection</th>
+                            <th scope="col" data-traduction="profil.c_logs.user_agent">User-Agent</th>
+                            <th scope="col" data-traduction="profil.c_logs.ip">IP address</th>
+                            <th scope="col" data-traduction="profil.c_logs.time">Time</th>
+                            <th scope="col" data-traduction="profil.c_logs.status">Connection Status</th>
                         </tr>
                     </thead>
                     <tbody id="connect-log-tbody">
@@ -88,8 +88,8 @@
                 <hr>
             </section>
             <section>
-                <h2>Miscellaneous :</h2>
-                <button id="disconnect-user">Disconnect</button>
+                <h2 data-traduction="profil.miscellaneous">Miscellaneous :</h2>
+                <button id="disconnect-user" data-traduction="profil.disconnect">Disconnect</button>
                 <hr>
             </section>
         </div>

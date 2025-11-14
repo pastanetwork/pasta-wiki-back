@@ -114,4 +114,5 @@ td button{
 #disconnect-user{
     font-size: 1em;
     padding: 5px;
+    cursor: pointer;
 }

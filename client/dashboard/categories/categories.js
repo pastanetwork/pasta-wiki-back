@@ -117,22 +117,22 @@ async function deleteButton(el, category) {
         };
         setAlertOpened(true,`
         <fieldset id="category-list-alert-delete">
-            <h2>Confirm action</h2>
+            <h2 data-traduction="alert.title.confirm_action">Confirm action</h2>
             <hr>
             <br>
-            <p>Are you sure you want to delete :</p>
+            <p data-traduction="alert.delete.msg.are_u_sure_u_want_to_del">Are you sure you want to delete :</p>
             <br>
             <h3>${category.title}</h3>
             <br>
-            <p>This action will delete ${category.title} permanently.<p>
+            <p><span data-traduction="alert.delete.msg.action_will_delete">This action will delete</span> ${category.title} <span data-traduction="alert.delete.msg.permanently">permanently.</span></p>
             <br>
             <input type="checkbox" name="agreement" id="category-list-alert-agree">
-            <label for="agreement"><code>I understand this action is irreversible and can't be undone.</code></label>
+            <label for="agreement"><code data-traduction="article.alert.confirm_agree">I understand this action is irreversible and can't be undone.</code></label>
             <br>
             <br>
             <div id="category-list-alert-btn-holder">
-                <button id="category-list-alert-undo"><h3>Undo</h3></button>
-                <button id="category-list-alert-confirm"><h3>Confirm</h3></button>
+                <button id="category-list-alert-undo"><h3 data-traduction="alert.button.undo">Undo</h3></button>
+                <button id="category-list-alert-confirm"><h3 data-traduction="alert.button.confirm">Confirm</h3></button>
             </div>
         </fieldset>
         `);
@@ -216,6 +216,7 @@ function setAlertOpened(val,dom){
         alert_div.dataset.opened=false
         alert_div.innerHTML=""
     }
+    updateLang();
 }
 
 refresh_btn.addEventListener("click",async function(){

@@ -61,6 +61,7 @@ async function refreshData(){
         `;
         tr_tag.innerHTML = dom;
     }
+    updateLang();
 }
 
 async function sendProfilModification(){
@@ -124,6 +125,7 @@ function setAlertOpened(val,dom){
         alert_div.dataset.opened=false
         alert_div.innerHTML=""
     }
+    updateLang();
 }
 
 function converTime(val){
@@ -147,18 +149,18 @@ updateLang()
 send_profil_modif_btn.addEventListener("click",async function(){
     setAlertOpened(true,`
         <fieldset id="profil-modif-alert">
-            <h2>Confirm action</h2>
+            <h2 data-traduction="alert.title.confirm_action">Confirm action</h2>
             <hr>
             <br>
-            <label for="verify2fa-code">Open your 2FA application and confirm the provided code</label>
+            <label for="verify2fa-code" data-traduction="profil.alert.confirm_2fa_code">Open your 2FA application and confirm the provided code.</label>
             <br>
             <br>
             <input type="number" min="0" max="999999" name="verify2fa-code" id="profil-modif-alert-2fa-code">
             <br>
             <br>
             <div id="profil-modif-alert-btn-holder">
-                <button id="profil-modif-alert-undo-btn"><h3>Undo</h3></button>
-                <button id="profil-modif-alert-confirm-btn"><h3>Confirm</h3></button>
+                <button id="profil-modif-alert-undo-btn" data-traduction="alert.button.undo"><h3>Undo</h3></button>
+                <button id="profil-modif-alert-confirm-btn" data-traduction="alert.button.confirm"><h3>Confirm</h3></button>
             </div>
         </fieldset>
     `);
@@ -172,7 +174,8 @@ send_profil_modif_btn.addEventListener("click",async function(){
     })
 
     confirm_action.addEventListener("click",async function(){
-        if (code_2fa_input.value===""){
+        const code = code_2fa_input.value;
+        if (code===""){
             return;
         }
         if (!/^\d{6}$/.test(code) || !/^\d+$/.test(code)){
