@@ -43,8 +43,9 @@ async function verifAdmin(){
 
 export async function updateLang(){
     const translatable_elements = document.querySelectorAll("[data-traduction]");
-    const translations = await fetchData("/api/v1/client-translations");
-    const available_translations = await fetchData("/api/v1/client-langs");
+    let is_local_data= (localStorage.getItem("translations") || false) && (localStorage.getItem("available-translations") || false);
+    const translations = is_local_data ? JSON.parse(localStorage.getItem("translations")) : await fetchData("/api/v1/client-translations");
+    const available_translations = is_local_data ? JSON.parse(localStorage.getItem("available-translations")) : await fetchData("/api/v1/client-langs");
     for (let el of translatable_elements){
         for (let trad in translations){
             if (el.dataset.traduction == trad ){
@@ -52,9 +53,9 @@ export async function updateLang(){
             }
         }
     }
+    
     let dom=""
     for (let el of available_translations){
-        const selected = el === lang ? "selected" : "";
         dom+=`<div data-value="${el}" class="header-lang-dropdown-element"><img class="header-lang-flag" src="https://flagicons.lipis.dev/flags/4x3/${el.split("_")[1]}.svg" alt="${el} flag"/></div>`
     }
     lang_dropdown.innerHTML=dom;
@@ -72,6 +73,13 @@ export async function updateLang(){
             lang_dropdown_btn.innerHTML=icons.chevron.down;
             updateLang();
         });
+    }
+    const translations_fetched = await fetchData("/api/v1/client-translations");
+    const available_translations_fetched = await fetchData("/api/v1/client-langs");
+    localStorage.setItem("translations",JSON.stringify(await translations_fetched));
+    localStorage.setItem("available-translations",JSON.stringify(await available_translations_fetched));
+    if (!is_local_data){
+        await updateLang();
     }
 }
 
