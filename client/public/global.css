@@ -75,7 +75,11 @@ header div a, #header-icons-nav a{
     border-radius: 2px;
 }
 
-.header-menu-icon:hover{
+.clickable-title{
+    color: white;
+}
+
+.header-menu-icon:hover, .clickable-title:hover{
     color: rgb(191,191,191);
 }
 
@@ -105,7 +109,7 @@ header div a, #header-icons-nav a{
     cursor: pointer;
 }
 
-#header-lang-selector:hover{
+#header-lang-selector:hover, .header-lang-dropdown-element:hover{
     background-color: rgb(31,31,31);
 }
 
@@ -138,8 +142,4 @@ header div a, #header-icons-nav a{
     border-radius: 5px;
     padding: 5px 0px;
     cursor: pointer;
-}
-
-.header-lang-dropdown-element:hover{
-    background-color: rgb(31,31,31);
 }

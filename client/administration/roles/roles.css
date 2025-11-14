@@ -24,10 +24,6 @@ h2{
     gap: 15px;
 }
 
-#administration-nav-bar a{
-    color: white;
-}
-
 #administration-nav-bar hr{
     height: 50px;
     width: 3px;
