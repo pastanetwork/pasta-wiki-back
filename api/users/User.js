@@ -5,7 +5,7 @@ const QRCode = require('qrcode');
 const { v4: uuidv4 } = require('uuid');
 
 const { registerSchema, usernameSchema, emailSchema, passwordSchema } = require("./joi-schemas");
-const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, getUserInfos, getUserConnectionLogs, updateUsername, updateEmail, updatePassword, } = require("./sql_requests");
+const { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB, getUserInfos, getUserConnectionLogs, updateUsername, updateEmail, updatePassword, getAllUsers, } = require("./sql_requests");
 const { jwt_values } = require("../../express_utils/env-values-dictionnary");
 const { encrypt, decrypt} = require("../../express_utils/encryption");
 
@@ -132,9 +132,13 @@ class User {
 
     async generateQRcode2FA() {
         const is_definitive = await getDefinitiveDB(this.user_id);
-        if (!is_definitive.code===200 || (is_definitive.code===200 && is_definitive.data)){
-            return {ok:false};
+
+        if (is_definitive.data.rows[0].definitive){
+            if (!is_definitive.code===200 || (is_definitive.code===200 && is_definitive.data)){
+                return {ok:false};
+            }
         }
+
         const secret = await getSecret2FA(this.user_id);
         if (secret.code!==200){
             return {ok:false};
@@ -287,6 +291,14 @@ class User {
         }
 
         return ({code:200,msg:"User modified successfully"})
+    }
+
+    async getAll(){
+        const result = await getAllUsers();
+        if (result.code!==200){
+            return db_error;
+        }
+        return ({code:200,msg:result.data});
     }
 }
 

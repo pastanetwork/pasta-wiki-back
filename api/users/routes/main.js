@@ -120,6 +120,16 @@ router.get("/get-infos", async(req,res)=>{
     return res.status(result.code).json(result).end();
 });
 
+router.get("/get-infos/advanced", async(req,res)=>{
+    const hasPermission = await verifPerm(req.cookies.authToken, 11);
+    if (!hasPermission) {
+        return res.status(401).end();
+    }
+    const user = new User({});
+    const result = await user.getAll();
+    return res.status(result.code).json(result).end();
+});
+
 router.get("/get-connect-logs", async(req,res)=>{
     const data = checkJWT(req.cookies.authToken);
     if (!data.ok){

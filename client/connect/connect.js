@@ -33,6 +33,10 @@ if (urlParams.get('require2fa') === 'true') {
     updateStep();
 }
 
+input_username.addEventListener("input", function (){
+    credentials.username = this.value;
+});
+
 input_email.addEventListener("input", function () {
     credentials.email = this.value;
 });
@@ -160,19 +164,27 @@ function updateStep(){
             connect_form.style.display="none";
             two_factor_auth_form.style.display="inline";
             
-            const qr_code_holder=document.getElementById("two-factor-qrcode-holder");
+            const qr_code_holder = document.getElementById("two-factor-qrcode-holder");
+            qr_code_holder.innerHTML = '';
+
+            if (qr_code_holder.querySelector('img')) {
+                return;
+            }
 
             const qrImg = document.createElement('img');
             qrImg.src = "/api/v1/users/qrcode-2fa";
             qrImg.alt = "QR Code for 2FA setup";
-            qr_code_holder.innerHTML='';
+            
             qrImg.onerror = function() {
                 return;
             };
+            
             qrImg.onload = function() {
-                qr_code_holder.appendChild(qrImg);
-            }
-        break;
+                if (qr_code_holder.children.length === 0) {
+                    qr_code_holder.appendChild(qrImg);
+                }
+            };
+            break;
     }
     updateLang();
 }
