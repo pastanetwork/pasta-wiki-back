@@ -1,4 +1,4 @@
-# PUBLIC API
+# PASTANETWORK WIKI MANAGER - PUBLIC API
 
 ---
 
@@ -72,7 +72,8 @@ Take a lang code in parameter (en_us, fr_fr, de_de, es_es,.. ).
     "title":"Tutoriels",
     "title_urlized":"tutoriels",
     "lang":"fr_fr",
-    "articles_nb":"1"
+    "articles_nb":"1",
+    "enabled":true // shown only if user has permission, else article will not be send.
     },{...}
 ]}
 ```
@@ -80,4 +81,19 @@ Take a lang code in parameter (en_us, fr_fr, de_de, es_es,.. ).
 
 ```json
 {"data":"Error : No category found with [lang_code] as language"}
+```
+
+### [/api/v1/categories/get-langs]() - GET :
+
+- 200 :
+
+```json
+{"data":[
+    {
+    "lang":{
+        "name":"English (US)",
+        "code":"en_us"
+    }
+    },{...}
+]}
 ```
