@@ -1,5 +1,3 @@
-CREATE DATABASE "pasta-wiki-manager";
-
 \c pasta-wiki-manager;
 
 CREATE SCHEMA IF NOT EXISTS articles;

@@ -1,0 +1,11 @@
+services:
+  express:
+    image: pasta-wiki-manager
+    container_name: pasta_wiki_manager
+    networks:
+      - app_network
+    expose:
+      - "3001"
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
