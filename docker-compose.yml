@@ -2,6 +2,8 @@ services:
   express:
     image: pasta-wiki-manager
     container_name: pasta_wiki_manager
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     expose:
       - "3001"
     ports:
