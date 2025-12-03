@@ -116,21 +116,21 @@ EOF
 
     install)
         echo "Installing dependencies"
-        apt update && apt install unzip curl -y
-        echo ""
-
-        apt-get update
-        apt-get install ca-certificates curl
+        apt update
+        apt-get install ca-certificates curl unzip
         install -m 0755 -d /etc/apt/keyrings
         curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
         chmod a+r /etc/apt/keyrings/docker.asc
 
+        # Add the repository to Apt sources:
         echo \
           "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
           $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
           tee /etc/apt/sources.list.d/docker.list > /dev/null
         apt-get update
         apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+        echo ""
+
         read -p "Install Postgres? (y/N): " install_postgres
         install_postgres=${install_postgres:-"N"}
 
@@ -154,6 +154,7 @@ EOF
                 echo "# Allow Docker containers to connect" >> "$PG_CONF_DIR/pg_hba.conf"
                 echo "host    all    all    172.16.0.0/12    md5" >> "$PG_CONF_DIR/pg_hba.conf"
             fi
+
             systemctl restart postgresql
 
             read -p "Postgres username (default: pasta-wiki-manager): " create_pg_user
@@ -167,9 +168,28 @@ EOF
                 fi
             done
 
-            su - postgres -c "psql -c \"CREATE USER \\\"$create_pg_user\\\" WITH PASSWORD '$create_pg_password';\""
+            SQL_TMP=$(mktemp)
+            escaped_password=$(echo "$create_pg_password" | sed "s/'/''/g")
+            cat > "$SQL_TMP" <<EOSQL
+CREATE USER "$create_pg_user" WITH PASSWORD '$escaped_password';
+EOSQL
+            chmod 644 "$SQL_TMP"
+            su - postgres -c "psql -f $SQL_TMP"
+            rm -f "$SQL_TMP"
+            
             su - postgres -c "createdb -O \"$create_pg_user\" pasta-wiki-manager"
-            su - postgres -c "psql -d pasta-wiki-manager -f $(pwd)/postgres-init.sql"
+            
+            if [ -f "$(pwd)/postgres-init.sql" ]; then
+                su - postgres -c "psql -d pasta-wiki-manager -f $(pwd)/postgres-init.sql"
+            fi
+            
+            echo "Verifying PostgreSQL connection..."
+            if PGPASSWORD="$create_pg_password" psql -h 127.0.0.1 -U "$create_pg_user" -d pasta-wiki-manager -c "SELECT 1;" > /dev/null 2>&1; then
+                echo "PostgreSQL connection successful!"
+            else
+                echo "Warning: Could not verify PostgreSQL connection."
+                echo "Check your password and pg_hba.conf configuration."
+            fi
 
             pg_host="host.docker.internal"
             pg_user="$create_pg_user"
