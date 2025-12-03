@@ -180,7 +180,7 @@ EOSQL
             su - postgres -c "createdb -O \"$create_pg_user\" pasta-wiki-manager"
             
             if [ -f "$(pwd)/postgres-init.sql" ]; then
-                su - postgres -c "psql -d pasta-wiki-manager -f $(pwd)/postgres-init.sql"
+                PGPASSWORD="$create_pg_password" psql -h 127.0.0.1 -U "$create_pg_user" -d pasta-wiki-manager -f "$(pwd)/postgres-init.sql"
             fi
             
             echo "Verifying PostgreSQL connection..."
