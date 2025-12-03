@@ -150,9 +150,9 @@ EOF
             sed -i "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/" "$PG_CONF_DIR/postgresql.conf"
             sed -i "s/^listen_addresses = 'localhost'/listen_addresses = '*'/" "$PG_CONF_DIR/postgresql.conf"
             
-            if ! grep -q "172.16.0.0/12" "$PG_CONF_DIR/pg_hba.conf"; then
-                echo "# Allow Docker containers to connect" >> "$PG_CONF_DIR/pg_hba.conf"
-                echo "host    all    all    172.16.0.0/12    md5" >> "$PG_CONF_DIR/pg_hba.conf"
+            if ! grep -q "0.0.0.0/0" "$PG_CONF_DIR/pg_hba.conf"; then
+                echo "# Allow all connections" >> "$PG_CONF_DIR/pg_hba.conf"
+                echo "host    all    all    0.0.0.0/0    md5" >> "$PG_CONF_DIR/pg_hba.conf"
             fi
 
             systemctl restart postgresql
