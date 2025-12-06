@@ -4,6 +4,11 @@ const cors = require("cors");
 const router = Router();
 
 const { client_langs, client_translations } = require("../express_utils/trads")
+const corsOptions = {
+    origin: ["http://localhost:3000", "https://www.pastanetwork.com","https://docs-manager.pastanetwork.com"],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
 
 router.get("/client-langs",async (req, res)=>{
     res.status(200).json(client_langs);
