@@ -28,7 +28,7 @@ function encrypt(text) {
         
         return {
             ok: true,
-            data: `${iv.toString('hex')}:${authTag.toString('hex')}:${encrypted}`
+            key: `${iv.toString('hex')}:${authTag.toString('hex')}:${encrypted}`
         };
     } catch (error) {
         console.log('Encryption error:', error);
@@ -67,7 +67,7 @@ function decrypt(encryptedData) {
         let decrypted = decipher.update(encrypted, 'hex', 'utf8');
         decrypted += decipher.final('utf8');
         
-        return { ok: true, data: decrypted };
+        return { ok: true, key: decrypted };
     } catch (error) {
         console.log('Decryption error:', error);
         return { ok: false };
