@@ -38,8 +38,11 @@ async function getCategories(lang="all"){
     return { msg:result,code:200 };
 }
 
-async function getCategoriesWriter(){
-
+async function getCategoriesWriter(lang="all"){
+    let select_lang=false;
+    if (lang!="all"){
+        select_lang=true;
+    }
     const categories = await getAllCategories();
     if (categories.code!==200){
         return db_error;
@@ -57,7 +60,17 @@ async function getCategoriesWriter(){
             });
         }
     }
-    return { msg:request_result,code:200 };
+    let result;
+    if (select_lang){
+        result = request_result.filter(item => item.lang === lang);
+        if (result.length===0){
+            return { msg:`Error : No category found with ${lang} as language`, code:404 };
+        }
+    } else {
+        result = request_result;
+    }
+
+    return { msg:result,code:200 };
 }
 
 async function publishCategory(title, lang, enabled){

@@ -216,4 +216,14 @@ async function getAllUsers() {
     }
 }
 
-module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB,  getUserInfos, getUserConnectionLogs, updateUsername, updateEmail, updatePassword, getAllUsers, }
+async function getAllRoles() {
+    const query="SELECT id, name FROM perms.roles;";
+    try {
+        const result =await pool.query(query);
+        return { code: 200, data: result.rows };
+    } catch (error) {
+        return { code: 500, data: error };
+    }
+}
+
+module.exports = { verifyEmailDB, registerUserDB, loginUserDB, logLoginAttempt, verifyUserEmailAndId, getUserRole, getRolePerms, getSecret2FA, setDefinitiveDB, getDefinitiveDB, setApprovedDB,  getUserInfos, getUserConnectionLogs, updateUsername, updateEmail, updatePassword, getAllUsers, getAllRoles, }

@@ -18,7 +18,13 @@ router.get("/all",async (req,res)=>{
 
 router.get("/lang/:lang",async (req,res)=>{
     const { lang } = req.params;
-    let res_log=await getCategories(lang);
+    let res_log={};
+    const hasPermission = await verifPerm(req.cookies.authToken, 9);
+    if (hasPermission) {
+        res_log=await getCategoriesWriter(lang);
+    } else {
+        res_log=await getCategories(lang);
+    }
     res.status(res_log.code).json({data:res_log.msg});
 });
 
