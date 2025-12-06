@@ -26,7 +26,7 @@ case "$1" in
                 ;;
             env)
                 read -p "Express port (default 3001): " express_port
-                read -p "Express public route (default /api/v1): " express_route
+                read -p "Express public route (default api/v1): " express_route
                 read -p "Frontend url (default localhost:3000): " frontend_url
 
                 if [ "$pg_local" = false ]; then
@@ -46,7 +46,7 @@ case "$1" in
                 fi
 
                 express_port=${express_port:-3001}
-                express_route=${express_route:-"/api/v1"}
+                express_route=${express_route:-"api/v1"}
                 frontend_url=${frontend_url:-"localhost:3000"}
                 pgsql_db_server=${pgsql_db_server:-$pg_host}
                 pgsql_db_port=${pgsql_db_port:-5432}
