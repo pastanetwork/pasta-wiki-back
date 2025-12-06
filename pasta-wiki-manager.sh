@@ -57,23 +57,23 @@ case "$1" in
                 cat > .env <<EOF
 #EXPRESS values
 EXPRESS_PORT=$express_port
-EXPRESS_PUBLIC_ROUTE=$express_route
+EXPRESS_PUBLIC_ROUTE="$express_route"
 
 #FRONTEND
-FRONTEND_URL=$frontend_url
+FRONTEND_URL="$frontend_url"
 
 #POSTGRES VALUES
-POSTGRES_USER=$pgsql_db_user
-POSTGRES_PASSWORD=$pgsql_db_password
-POSTGRES_HOST=$pgsql_db_server
+POSTGRES_USER="$pgsql_db_user"
+POSTGRES_PASSWORD="$pgsql_db_password"
+POSTGRES_HOST="$pgsql_db_server"
 POSTGRES_PORT=$pgsql_db_port
-POSTGRES_DATABASE=$pgsql_db
+POSTGRES_DATABASE="$pgsql_db"
 
 #JWT SECRET KEY
-JWT_SECRET=$(generateBase64Key)
+JWT_SECRET="$(generateBase64Key)"
 
 # 2FA ENCRYPTION KEY
-ENCRYPT_2FA=$(generateBase64Key)
+ENCRYPT_2FA="$(generateBase64Key)"
 EOF
                 echo "Express config saved."
                 
