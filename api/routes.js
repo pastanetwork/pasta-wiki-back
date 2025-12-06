@@ -1,4 +1,6 @@
 const { Router } = require("express");
+const cors = require("cors");
+
 const router = Router();
 
 const { client_langs, client_translations } = require("../express_utils/trads")
@@ -13,11 +15,11 @@ router.get("/client-translations",async (req, res)=>{
 
 const category_routes = require("./categories/routes/main");
 
-router.use(`/categories`, category_routes);
+router.use(`/categories`, cors(corsOptions), category_routes);
 
 const articles_routes = require("./articles/routes/main");
 
-router.use(`/articles`, articles_routes);
+router.use(`/articles`, cors(corsOptions), articles_routes);
 
 const users_routes = require("./users/routes/main");
 
