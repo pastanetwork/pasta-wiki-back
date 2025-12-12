@@ -38,7 +38,7 @@ async function refreshCategories(){
         tr_tag._categoryData = i;
         const dom = `
             <td>
-                <a href="https://wiki.pastanetwork.com/${i.title_urlized}" target="_blank">${i.title}</a>
+                <a href="https://pastanetwork.com/wiki/${i.lang}/${i.title_urlized}" target="_blank">${i.title}</a>
             </td>
             <td><select data-type="select">
                 </select>

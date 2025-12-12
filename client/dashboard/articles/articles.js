@@ -39,7 +39,7 @@ async function refreshArticles(){
         tr_tag._articleData = i;
         const dom = `
             <td>
-                <a href="https://wiki.pastanetwork.com/${i.category_urlized}/${i.title_urlized}" target="_blank">${i.title}</a>
+                <a href="https://pastanetwork.com/wiki/${i.lang}/${i.category_urlized}/${i.title_urlized}" target="_blank">${i.title}</a>
             </td>
             <td>${i.lang}</td>
             <td>
