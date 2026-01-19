@@ -132,7 +132,6 @@ class User {
 
     async generateQRcode2FA() {
         const is_definitive = await getDefinitiveDB(this.user_id);
-
         if (is_definitive.data.rows[0].definitive){
             if (!is_definitive.code===200 || (is_definitive.code===200 && is_definitive.data)){
                 return {ok:false};

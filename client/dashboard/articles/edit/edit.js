@@ -15,10 +15,10 @@ let categories_list;
 const urlParams = new URLSearchParams(window.location.search);
 
 let article_vals = {
-    category: "",
+    category: {name:"",lang:""},
     title: "",
     prev_title: "",
-    prev_category: "",
+    prev_category: {name:"",lang:""},
     content: "",
     enabled: true
 };
@@ -36,10 +36,12 @@ function refreshArticle(){
             editor.value=el.content;
             category_title.innerText=el.category;
             article_title.innerText=el.title;
-            article_vals.category=el.category;
+            article_vals.category.name=el.category;
+            article_vals.category.lang=el.lang;
             article_vals.title=el.title;
             article_vals.prev_title=el.title;
-            article_vals.prev_category=el.category;
+            article_vals.prev_category.name=el.category;
+            article_vals.prev_category.lang=el.lang;
             article_vals.content=el.content;
             article_vals.enabled=el.enabled;
         }
@@ -50,9 +52,9 @@ function refreshArticle(){
 }
 
 function refreshCategories(){
-    let select_assign_category_dom=`<option value="none" ${article_vals.category==="none" ? "selected" : ""}>none</option>\n`
+    let select_assign_category_dom=`<option value="none" ${article_vals.category.name==="none" ? "selected" : ""}>none</option>\n`
     for (let el of categories_list.data){
-        select_assign_category_dom+=`<option value="${el.title}" ${article_vals.category===el.title ? "selected" : ""}>${el.title}</option>\n`
+        select_assign_category_dom+=`<option value="${el.title}" ${( article_vals.category.name===el.title ) && (article_vals.category.lang===el.lang) ? "selected" : ""}>${el.title} (${el.lang})</option>\n`
     }
     select_assign_category.innerHTML=select_assign_category_dom;
 }
@@ -68,12 +70,14 @@ editor.addEventListener('input', updatePreview);
 updatePreview();
 
 async function sendPostUpdate(){
-    if (article_vals.category=="" || article_vals.title==""||article_vals.prev_title==""||article_vals.content==""){
+    console.log(article_vals)
+    if (article_vals.category.name=="" || article_vals.title==""||article_vals.prev_title==""){
         return
     }
     const url="/api/v1/articles/modify"
     const options={method:"PUT",headers: { "Content-Type": "application/json" },body:JSON.stringify(article_vals)}
     const response = await fetch(url,options)
+    console.log(response)
 }
 
 send_new_category_and_title.addEventListener("click",async function(){
@@ -81,15 +85,16 @@ send_new_category_and_title.addEventListener("click",async function(){
 })
 
 async function updateArticleCategoryAndTitle(){
-    const prev_category = article_vals.category;
+    cons
+    const prev_category = { name: article_vals.category.name, lang: article_vals.category.lang };
     const prev_title = article_vals.title;
 
-    const new_category = select_assign_category.value;
+    const new_category = { name: select_assign_category.value };
     const new_title = new_title_input.value;
 
     let category_exist = false
     for (let el of categories_list.data){
-        if (el.title===new_category){
+        if (el.title===new_category.name){
             category_exist=true
         }
     }
@@ -99,15 +104,16 @@ async function updateArticleCategoryAndTitle(){
     if (!category_exist){
         return
     }
-    article_vals.prev_category=prev_category;
+    article_vals.prev_category.name=prev_category.name;
+    article_vals.prev_category.lang=prev_category.lang;
     article_vals.prev_title=prev_title;
 
-    article_vals.category = new_category;
+    article_vals.category.name = new_category.name;
     if (new_title!==""){
         article_vals.title = new_title;
     }
     await sendPostUpdate();
-    window.location.replace(`/dashboard/articles/edit?category=${URLize(article_vals.category)}&article=${URLize(article_vals.title)}`);
+    //window.location.replace(`/dashboard/articles/edit?category=${URLize(article_vals.category.name)}&article=${URLize(article_vals.title)}`);
 
 }
 

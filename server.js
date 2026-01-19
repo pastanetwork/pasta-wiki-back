@@ -21,5 +21,3 @@ app.use(`/${express_values.public_route}`, api_routes);
 const client_routes = require("./client/routes")
 
 app.use(`/`, client_routes);
-
-

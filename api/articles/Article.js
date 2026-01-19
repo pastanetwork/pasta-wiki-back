@@ -1,31 +1,33 @@
-const { getAllArticles, verifyArticleDB, createArticle, updateArticle, deleteArticleDB } = require("./sql_requests")
+const { createArticle, updateArticle, changeArticleLang, deleteArticleDB } = require("./sql_requests");
 const { URLize } = require("../../express_utils/utils");
 
 const db_error = {msg:`Error : Something went wrong with the database`,code:500};
 
 class Article {
     constructor(data = {}) {
-        this.title = data.title || "";
-        this.category = data.category || "none";
+        this.title = data.title || "How to cook farfalle pasta al dente ?";
+        this.category = data.category || {name:"Cooking pasta like a chief",lang:"en_us"};
         this.content = data.content || "";
-        this.lang = { code : data.lang_code || "", name : data.lang_name || "" }
-        
+        this.enabled = data.enabled || false;
     }
 
     async getAll(lang="all",advanced_data=false){
-        let select_lang=false;
-        if (lang!="all"){
-            select_lang=true;
-        }
 
+        const { getAllArticles } = require("./sql_requests");
+
+        const select_lang = lang!="all"
         const articles = await getAllArticles();
+
         if (articles.code!==200){
             return {msg:`Error : Something went wrong with the database`,code:500};
         }
 
         let request_result=[];
+
         for (let i of articles.data){
+
             if (advanced_data){
+                // Authorized data access
                 request_result.push({
                     title:i.article_name,
                     title_urlized:URLize(i.article_name),
@@ -35,7 +37,9 @@ class Article {
                     content:i.content,
                     enabled:i.enabled,
                 });
+
             } else {
+                // Public data access
                 if (i.enabled && i.category_enabled){
                     request_result.push({
                         title:i.article_name,
@@ -50,15 +54,12 @@ class Article {
             
         }
 
-        let result;
-        if (select_lang){
-            result = request_result.filter(item => item.lang === lang);
-            if (result.length===0){
-                return {msg:`Error : No article found with ${lang} as language`,code:404};
-            }
-        } else {
-            result = request_result;
+        const result = select_lang ? request_result.filter(item => item.lang === lang) : request_result;
+
+        if (select_lang && result.length===0){
+            return {msg:`Error : No article found${ select_lang ? " with " + lang + " as language" : ""}`+".",code:404};
         }
+
         return {msg:result,code:200};
     }
 
@@ -81,6 +82,19 @@ class Article {
         return {msg :filtered,code:200};
     }
 
+    async create(){
+        const exist = await this.verify();
+        if (exist.code===500){return db_error};
+        if (exist.data){
+            return {msg:`Error : Can't create article. An article with this title in this category already exist.`,code:403};
+        }
+    
+        const result_obj = createArticle(this.title, this.category.name, this.category.lang, this.content, this.enabled);
+        if (result_obj.code===500){return db_error;}
+    
+        return {msg:"Article created successfully",code:201};
+    }
+
     async delete(){
         const result = await deleteArticleDB(this.title,this.category);
         if (result.code===404){
@@ -89,21 +103,39 @@ class Article {
         if (result.code===500){
             return db_error;
         }
+        return {msg:"Article deleted successfully",code:200};
     }
 
-    async modify(title, category, content, enabled, prev_title, prev_category = category){
-        const exist = await verifyArticleDB(prev_title,prev_category);
-        if (exist.code===500){return db_error;};
-        if (exist.data===false){
+    async modify(prev_title = this.title, prev_category = this.category){
+        const old_data_exist = await this.verify(prev_title,prev_category);
+        if (old_data_exist.code===500){return db_error;};
+        if (!old_data_exist.data){
             return {msg:`Error : Can't modify article. This article doesn't exist.`,code:404};
         }
-    
-        const result_obj = updateArticle(title,category,content,enabled, prev_title);
-        if (result_obj.code===500){return db_error;}
+
+
+        if ((prev_title !== this.title)||(prev_category.name !== this.category.name) && (prev_category.lang !== this.category.lang)){
+            const new_data_exist = await this.verify(this.title,this.category);
+            if (new_data_exist.data){
+                return {msg:`Error : Can't modify article. An article with this title in this category already exist.`,code:403};
+            }
+        }
+        
+        const result_obj = await updateArticle(this.title,this.category,this.content,this.enabled, prev_title, prev_category);
+        if (result_obj.code===500){return db_error};
         
         return {msg:"Article updated successfully",code:200};
     }
 
+    async changeLang(old_lang){
+        const result = await changeArticleLang(old_lang,this.category,this.title);
+        return result    
+    }
+
+    async verify(title=this.title,category=this.category){
+        const { verifyArticleDB } = require("./sql_requests");
+        return await verifyArticleDB(title, category.name, category.lang);
+    }
 }
 
 module.exports = Article;

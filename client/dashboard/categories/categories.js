@@ -38,9 +38,9 @@ async function refreshCategories(){
         tr_tag._categoryData = i;
         const dom = `
             <td>
-                <a href="https://pastanetwork.com/wiki/${i.lang}/${i.title_urlized}" target="_blank">${i.title}</a>
+                <a href="https://www.pastanetwork.com/wiki/${i.lang}/${i.title_urlized}" target="_blank">${i.title}</a>
             </td>
-            <td><select data-type="select">
+            <td><select data-type="select" data-lang="none">
                 </select>
             </td>
             <td>${i.articles_nb}</td>
@@ -159,6 +159,7 @@ async function enabledButton(el, category) {
             title: category.title,
             prev_title: category.title,
             lang: category.lang,
+            prev_lang: category.lang,
             enabled: el.checked
         };
         await fetchRequest("PUT", "/api/v1/categories/modify", sent_values);

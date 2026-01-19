@@ -13,6 +13,8 @@ const icons = {
 
 let category_list = "";
 let articles_data = "";
+let select_options_category = [];
+
 async function refreshData() {
     await refreshCategory();
     await refreshArticles();
@@ -20,18 +22,30 @@ async function refreshData() {
 }
 await refreshData();
 
+const new_article_category_select = document.getElementById("articles-upper-comp-toolbar-new-article-category");
+
 async function refreshCategory() {
+
     category_list = await fetchData("/api/v1/categories/all");
     new_article_category_selector.innerHTML=`<option value="default" selected disabled data-traduction="dashboard.articles.select_category">Select category</option>`;
     for (let el of category_list.data){
-        new_article_category_selector.innerHTML+=`<option value="${el.title}">${el.title} (${el.lang})</option>`
+        new_article_category_selector.innerHTML+=`<option value="${el.title}" data-lang="${el.lang}" class="select-option-category">${el.title} (${el.lang})</option>`
+    }
+
+    select_options_category = document.querySelectorAll(".select-option-category");
+    for (let el of select_options_category){
+        el.addEventListener("click",function(){
+            new_article_category_select.dataset.lang = el.dataset.lang
+        })
     }
 
 }
 
 async function refreshArticles(){
+
     articles_data = await fetchData("/api/v1/articles/all");
     article_list_holder.innerHTML = "";
+
     for (let i of articles_data.data) {
         const tr_tag = document.createElement("tr");
         tr_tag.classList.add("article-data-holder");
@@ -39,11 +53,11 @@ async function refreshArticles(){
         tr_tag._articleData = i;
         const dom = `
             <td>
-                <a href="https://pastanetwork.com/wiki/${i.lang}/${i.category_urlized}/${i.title_urlized}" target="_blank">${i.title}</a>
+                <a href="https://www.pastanetwork.com/wiki/${i.lang}/${i.category_urlized}/${i.title_urlized}" target="_blank">${i.title}</a>
             </td>
             <td>${i.lang}</td>
             <td>
-                <select data-type="select">
+                <select data-type="select" data-lang="none">
                 </select>
             </td>
             <td><a href="/dashboard/articles/edit?category=${i.category_urlized}&article=${i.title_urlized}">${icons.pen}</a></td>
@@ -54,9 +68,17 @@ async function refreshArticles(){
     }
 
     const table_data_list = document.querySelectorAll(".article-data-holder");
+    
+    // This triple for loop look for interactable elements (data-type="") inside of the articles list.
+
+    // First one iterate all elements (i) of the tbody;
+    // Second one iterate every row (j);
+    // Third one iterate every elements (el) of the row.
+
     for (let i of table_data_list) {
         for (let j of i.children) {
             for (let el of j.children) {
+
                 switch (el.dataset?.type) {
                     case "delete":
                         deleteButton(el, i._articleData);
@@ -68,12 +90,12 @@ async function refreshArticles(){
                         selectCategory(el, i._articleData);
                         break;
                 }
+
             }
         }
     }
 }
 
-const new_article_category_select = document.getElementById("articles-upper-comp-toolbar-new-article-category");
 const new_article_title_input = document.getElementById("articles-upper-comp-toolbar-new-article-title");
 const new_article_send_btn =  document.getElementById("articles-upper-comp-toolbar-new-article-send");
 
@@ -86,7 +108,10 @@ new_article_send_btn.addEventListener("click",async function(){
 });
 
 async function createNewArticle() {
+
     const category = new_article_category_select.value;
+    const lang = new_article_category_select.dataset.lang;
+
     if (category==="default"){
         return {ok:false}
     }
@@ -105,7 +130,7 @@ async function createNewArticle() {
         return {ok:false}
     }
     const sent_values = {
-        category: category,
+        category: { name:category, lang:lang},
         title: title,
         content: "",
         enabled: false,
@@ -115,9 +140,10 @@ async function createNewArticle() {
 }
 
 async function deleteButton(el, article) {
+
     el.addEventListener("click", async function() {
         const sent_values = {
-            category: article.category,
+            category: {name:article.category,lang:article.lang},
             title: article.title,
         };
         setAlertOpened(true,`
@@ -161,10 +187,10 @@ async function enabledButton(el, article) {
     
     el.addEventListener("click", async function() {
         const sent_values = {
-            category: article.category,
+            category: {name:article.category,lang:article.lang},
             title: article.title,
             prev_title: article.title,
-            prev_category:article.category,
+            prev_category:{name:article.category,lang:article.lang},
             content: article.content,
             enabled: el.checked,
         };
@@ -173,33 +199,37 @@ async function enabledButton(el, article) {
     });
 }
 
-async function selectCategory(el, article){
+async function selectCategory(el, article) {
     let category_none = article.category === "none";
-    let dom=`<option value="none" `+category_none+`>none</option>\n`
-    for (let i of category_list.data){
-        let selected=""
-        if (article.category===i.title){
-            selected="selected"
-        }
-        dom +=`<option value="${i.title}" `+selected+`>${i.title}</option>\n`
+    let dom = `<option value="none" ${category_none ? "selected" : ""} data-lang="none">none (none)</option>\n`;
+    
+    for (let i of category_list.data) {
+        let selected = ((article.category === i.title) && (article.lang === i.lang)) ? "selected" : "";
+        dom += `<option value="${i.title}" ${selected} data-lang="${i.lang}">${i.title} (${i.lang})</option>\n`;
     }
-    el.innerHTML=dom
-
-    el.addEventListener('change',async function(){
+    
+    el.innerHTML = dom;
+    
+    el.addEventListener('change', async function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const selectedLang = selectedOption.dataset.lang;
+        
         const sent_values = {
-            category: el.value,
-            prev_category:article.category,
+            category: { name: this.value, lang: selectedLang },
+            prev_category: { name: article.category, lang: article.lang },
             title: article.title,
             prev_title: article.title,
             content: article.content,
             enabled: article.enabled,
         };
+        
         await fetchRequest("PUT", "/api/v1/articles/modify", sent_values);
         await refreshData();
-    })
+    });
 }
 
 async function fetchRequest(method, url, vals) {
+
     const options = {
         method: method,
         headers: { "Content-Type": "application/json" },
@@ -208,16 +238,15 @@ async function fetchRequest(method, url, vals) {
     try{
         const response = await fetch(url, options);
         if (!response.ok) {
-            console.log(response)
         }
     } catch (error){
-        console.log(error)
     }
 }
 
 const alert_div = document.getElementById("article-list-confirm");
 
 function setAlertOpened(val,dom){
+
     if (val){
         alert_div.dataset.opened=true
         alert_div.innerHTML=dom

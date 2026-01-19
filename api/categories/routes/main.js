@@ -1,17 +1,19 @@
 const { Router } = require("express");
 const router = Router();
 
-const { getCategories, publishCategory, modifyCategory, getLangs, getCategoriesWriter, deleteCategory } = require("../utils");
 const { verifPerm } = require("../../../express_utils/utils");
 const Category = require("../Category")
 
 router.get("/all",async (req,res)=>{
     let res_log={};
+
+    const category = new Category();
+
     const hasPermission = await verifPerm(req.cookies.authToken, 9);
     if (hasPermission) {
-        res_log=await getCategoriesWriter();
+        res_log=await category.get("all",true)
     } else {
-        res_log=await getCategories("all");
+        res_log=await category.get("all");
     }
     res.status(res_log.code).json({data:res_log.msg});
 });
@@ -19,22 +21,35 @@ router.get("/all",async (req,res)=>{
 router.get("/lang/:lang",async (req,res)=>{
     const { lang } = req.params;
     let res_log={};
+
+    const category = new Category();
+
     const hasPermission = await verifPerm(req.cookies.authToken, 9);
     if (hasPermission) {
-        res_log=await getCategoriesWriter(lang);
+        res_log=await category.get(lang,true)
     } else {
-        res_log=await getCategories(lang);
+        res_log=await category.get(lang);
     }
     res.status(res_log.code).json({data:res_log.msg});
 });
 
 router.post("/publish", async (req,res)=>{
+
     const { title, lang, enabled} = req.body;
+
     const hasPermission = await verifPerm(req.cookies.authToken, 2);
-        if (!hasPermission) {
-            return res.status(401).end();
-        }
-    let res_log=await publishCategory(title, lang, enabled);
+    if (!hasPermission) {
+        return res.status(401).end();
+    }
+
+    const category_data = {
+        title:title,
+        lang:lang,
+        enabled:enabled
+    }
+
+    const category = new Category(category_data);
+    const res_log=await category.create();
     res.status(res_log.code).json({data:res_log.msg});
 });
 
@@ -44,7 +59,16 @@ router.put("/modify", async (req,res)=>{
     if (!hasPermission) {
         return res.status(401).end();
     }
-    let res_log=await modifyCategory(title, lang, enabled, prev_title, prev_lang);
+
+    const category_data = {
+        title:title,
+        lang:lang,
+        enabled:enabled
+    }
+
+    const category = new Category(category_data);
+
+    let res_log=await category.modify(prev_title, prev_lang);
     res.status(res_log.code).json({data:res_log.msg});
 
 });
@@ -63,8 +87,9 @@ router.put("/delete", async (req,res)=>{
 });
 
 router.get("/get-langs",async (req,res)=>{
-    let res_log = await getLangs();
+    const category = new Category();
+    let res_log = category.getLangs();
     res.status(res_log.code).json({data:res_log.msg});
 });
-
+ 
 module.exports = router;

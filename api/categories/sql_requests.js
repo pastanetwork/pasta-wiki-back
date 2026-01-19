@@ -45,7 +45,7 @@ async function createCategory(title, lang, enabled){
     }
 }
 
-async function updateCategory(title, lang, enabled, prev_title) {
+async function updateCategory(title, lang, enabled, prev_title, prev_lang) {
     const lang_res_obj = await getLangIdFromName(lang);
     if (lang_res_obj.code===500){
         return {code:500, data: lang_res_obj.data};
@@ -53,9 +53,18 @@ async function updateCategory(title, lang, enabled, prev_title) {
     if (lang_res_obj.code===404){
         return {code:404, data: lang_res_obj.data};
     }
-    const query = `UPDATE articles.categories SET category_name = $1, lang_id = $2, enabled = $3, category_ref = $4 WHERE category_ref = $5 `;
+
+    const prev_lang_res_obj = await getLangIdFromName(prev_lang);
+    if (prev_lang_res_obj.code===500){
+        return {code:500, data: prev_lang_res_obj.data};
+    }
+    if (prev_lang_res_obj.code===404){
+        return {code:404, data: prev_lang_res_obj.data};
+    }
+
+    const query = `UPDATE articles.categories SET category_name = $1, lang_id = $2, enabled = $3, category_ref = $4 WHERE category_ref = $5 AND lang_id = $6`;
     try {
-        await pool.query(query, [title, lang_res_obj.data, enabled, URLize(title), URLize(prev_title)]);
+        await pool.query(query, [title, lang_res_obj.data, enabled, URLize(title), URLize(prev_title), prev_lang_res_obj.data]);
         return { code: 200, data: "Success" };
     } catch (error) {
         return { code: 500, data: error };
@@ -98,6 +107,7 @@ async function deleteCategoryDB(title,lang) {
         await pool.query(query, [title,lang_res_obj.data])
         return { code: 200, data: "Success" };
     } catch (error) {
+        console.log(error)
         return { code: 500, data: error };
     }
 }
