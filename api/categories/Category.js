@@ -1,5 +1,7 @@
 const { getAllCategories, verifyCategoryDB, createCategory, updateCategory, getLangsDB, deleteCategoryDB, } = require("./sql_requests");
 const Article = require("../articles/Article");
+const { URLize } = require("../../express_utils/utils");
+
 
 const db_error = {msg:`Error : Something went wrong with the database`,code:500};
 
