@@ -118,7 +118,7 @@ async function deleteArticleDB(title,category) {
     if (category_res_obj.code===500){
         return {code:500, data: category_res_obj.data};
     }
-    const query = `DELETE FROM articles.articles WHERE article_name = $1 AND category_id = $2`;
+    const query = `DELETE FROM articles.articles WHERE article_name = $1 AND category_id = $2;`;
 
     try{
         const result = await pool.query(query, [title,category_res_obj.data])
