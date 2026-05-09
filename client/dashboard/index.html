@@ -1,43 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard - Pastanetwork Wiki Backend</title>
-        <link rel="stylesheet" href="/public/global.css">
-        <link rel="stylesheet" href="/dashboard/dashboard.css">
-    </head>
-    <body>
-        <header class="flex-al-it-center"></header>
-        <main>
-            <section>
-                <h2><a href="/dashboard/categories" class="clickable-title"><span data-traduction="dashboard.categories">Categories</span><span id="category-count"></span></a></h2>
-                <article>
-                    <div id="graph-1" class="graph">
-                        <h3 data-traduction="dashboard.by_lang">By langs</h3>
-                    </div>
-                </article>
-                <p><a href="/dashboard/categories" data-traduction="dashboard.edit.categories" class="clickable-title">Edit categories</a></p>
-            </section>
-            <hr>
-            <section>
-                <h2><a href="/dashboard/articles" class="clickable-title"><span data-traduction="dashboard.articles">Articles</span><span id="article-count"></span></a></h2>
-                <article>
-                    <div id="graph-2" class="graph">
-                        <h3 data-traduction="dashboard.by_lang">By langs</h3>
-                    </div>
-                    <div id="graph-3" class="graph">
-                        <h3 data-traduction="dashboard.by_categories">By categories</h3>
-                    </div>
-                </article>
-                <p><a href="/dashboard/articles" data-traduction="dashboard.edit.articles" class="clickable-title">Edit articles</a></p>
-            </section>
-            <hr>
-        </main>
-        <footer></footer>
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <script src="/public/global.js" type="module" defer></script>
-        <script src="/public/apexCharts.js" type="module" defer></script>
-        <script src="/dashboard/dashboard.js" type="module" defer></script>
-    </body>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard - Pastanetwork Wiki Backend</title>
+	<link rel="stylesheet" href="/public/global.css">
+	<link rel="stylesheet" href="/dashboard/dashboard.css">
+</head>
+
+<body>
+	<header class="flex-al-it-center"></header>
+	<main>
+		<section aria-labelledby="categories-heading">
+			<h2 id="categories-heading">
+				<a href="/dashboard/categories" class="clickable-title">
+					<span data-traduction="dashboard.categories">Categories</span>
+					<span id="category-count"></span>
+				</a>
+			</h2>
+			<div class="graphs-row">
+				<div id="graph-1" class="graph">
+					<h3 data-traduction="dashboard.by_lang">By langs</h3>
+				</div>
+			</div>
+			<p>
+				<a href="/dashboard/categories" data-traduction="dashboard.edit.categories" class="clickable-edit">Edit
+					categories</a>
+			</p>
+		</section>
+
+		<section aria-labelledby="articles-heading">
+			<h2 id="articles-heading">
+				<a href="/dashboard/articles" class="clickable-title">
+					<span data-traduction="dashboard.articles">Articles</span>
+					<span id="article-count"></span>
+				</a>
+			</h2>
+			<div class="graphs-row">
+				<div id="graph-2" class="graph">
+					<h3 data-traduction="dashboard.by_lang">By langs</h3>
+				</div>
+				<div id="graph-3" class="graph">
+					<h3 data-traduction="dashboard.by_categories">By categories</h3>
+				</div>
+			</div>
+			<p>
+				<a href="/dashboard/articles" data-traduction="dashboard.edit.articles" class="clickable-edit">Edit
+					articles</a>
+			</p>
+		</section>
+	</main>
+	<footer></footer>
+	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+	<script src="/public/global.js" type="module" defer></script>
+	<script src="/public/apexCharts.js" type="module" defer></script>
+	<script src="/dashboard/dashboard.js" type="module" defer></script>
+</body>
+
 </html>

@@ -1,67 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Articles - Pastanetwork Wiki Manager</title>
-    <link rel="stylesheet" href="/public/global.css">
-    <link rel="stylesheet" href="/dashboard/articles/articles.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Articles - Pastanetwork Wiki Manager</title>
+	<link rel="stylesheet" href="/public/global.css">
+	<link rel="stylesheet" href="/dashboard/articles/articles.css">
 </head>
+
 <body>
-    <header class="flex-al-it-center"></header>
-    <main>
-        <div id="articles-upper-comp">
-            <nav id="articles-nav-bar">
-                <hr>
-                <h2 data-traduction="dashboard.articles">Articles</h2>
-                <hr>
-                <h2>
-                    <a href="/dashboard/categories" data-traduction="dashboard.categories" class="clickable-title">Categories</a>    
-                </h2>
-                <hr>
-            </nav>
-            <div id="articles-upper-comp-toolbar">
-                <hr>
-                <div>
-                    <select id="articles-upper-comp-toolbar-new-article-category" data-lang="none">
-                    </select>
-                    <input id="articles-upper-comp-toolbar-new-article-title" type="text" placeholder="Article title">
-                    <button id="articles-upper-comp-toolbar-new-article-send" data-traduction="dashboard.articles.new_article">New article</button>
-                </div>
-                <hr>
-                <div id="articles-list-tools">
-                    <input id="articles-list-search-input" type="search" placeholder="Search article">
-                    <button id="articles-list-refresh">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
-                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
-                        </svg>
-                    </button>   
-                </div>
-                <hr>
-            </div>
-        </div>
-        <section>
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col" data-traduction="dashboard.articles.table.title">Title</th>
-                        <th scope="col" data-traduction="dashboard.articles.table.lang_code">Lang code</th>
-                        <th scope="col" data-traduction="dashboard.articles.table.category">Category</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col" data-traduction="dashboard.articles.table.enabled">Enabled</th>
-                    </tr>
-                </thead>
-                <tbody id="articles-list-holder">
-                    
-                </tbody>
-            </table>
-        </section>
-    </main>
-    <footer></footer>
-    <div id="article-list-confirm" data-opened="false"></div>
-    <script src="/public/global.js" type="module" defer></script>
-    <script src="/dashboard/articles/articles.js" type="module" defer></script>
+	<header class="flex-al-it-center"></header>
+	<main>
+		<div id="articles-upper-comp">
+			<nav id="articles-nav-bar" aria-label="Dashboard navigation">
+				<h2 data-traduction="dashboard.articles">Articles</h2>
+				<h2>
+					<a href="/dashboard/categories" data-traduction="dashboard.categories"
+						class="clickable-title">Categories</a>
+				</h2>
+			</nav>
+			<div id="articles-upper-comp-toolbar">
+				<div class="toolbar-group">
+					<label for="articles-upper-comp-toolbar-new-article-category" class="sr-only"
+						data-traduction="dashboard.articles.select_category">Select category</label>
+					<select id="articles-upper-comp-toolbar-new-article-category" data-lang="none"></select>
+
+					<label for="articles-upper-comp-toolbar-new-article-title" class="sr-only">Article title</label>
+					<input id="articles-upper-comp-toolbar-new-article-title" type="text" placeholder="Article title">
+
+					<button type="button" id="articles-upper-comp-toolbar-new-article-send"
+						data-traduction="dashboard.articles.new_article">New article</button>
+				</div>
+				<div id="articles-list-tools">
+					<label for="articles-list-search-input" class="sr-only">Search article</label>
+					<input id="articles-list-search-input" type="search" placeholder="Search article">
+
+					<button type="button" id="articles-list-refresh" aria-label="Refresh list">
+						<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor"
+							aria-hidden="true" viewBox="0 0 16 16">
+							<path fill-rule="evenodd"
+								d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+							<path
+								d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+						</svg>
+					</button>
+				</div>
+			</div>
+		</div>
+		<section aria-labelledby="articles-table-caption">
+			<table>
+				<caption id="articles-table-caption" class="sr-only">Articles list</caption>
+				<thead>
+					<tr>
+						<th scope="col" data-traduction="dashboard.articles.table.title">Title</th>
+						<th scope="col" data-traduction="dashboard.articles.table.lang_code">Lang code</th>
+						<th scope="col" data-traduction="dashboard.articles.table.category">Category</th>
+						<th scope="col"><span class="sr-only">Edit</span></th>
+						<th scope="col"><span class="sr-only">Delete</span></th>
+						<th scope="col" data-traduction="dashboard.articles.table.enabled">Enabled</th>
+					</tr>
+				</thead>
+				<tbody id="articles-list-holder"></tbody>
+			</table>
+		</section>
+	</main>
+	<footer></footer>
+	<div id="article-list-confirm" data-opened="false" role="alertdialog" aria-modal="true"
+		aria-labelledby="alert-dialog-title"></div>
+	<script src="/public/global.js" type="module" defer></script>
+	<script src="/dashboard/articles/articles.js" type="module" defer></script>
 </body>
+
 </html>

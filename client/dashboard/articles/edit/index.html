@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Article - Pastanetwork Wiki Manager</title>
-    <link rel="stylesheet" href="/public/global.css">
-    <link rel="stylesheet" href="/dashboard/articles/edit/edit.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Edit Article - Pastanetwork Wiki Manager</title>
+	<link rel="stylesheet" href="/public/global.css">
+	<link rel="stylesheet" href="/dashboard/articles/edit/edit.css">
 </head>
+
 <body>
-    <header class="flex-al-it-center"></header>
-    <div id="article-edit-menu-comp">
-		<p id="article-edit-back"><a href="/dashboard/articles" data-traduction="dashboard.articles.edit.return_to_article_list" class="clickable-title">Return to article section</a></p>
-        <h2><span id="article-edit-category"></span> - <span id="article-edit-title"></span></h2>
-        <div id="article-edit-menu">
+	<header class="flex-al-it-center"></header>
+	<div id="article-edit-menu-comp">
+		<p id="article-edit-back">
+			<a href="/dashboard/articles" data-traduction="dashboard.articles.edit.return_to_article_list"
+				class="clickable-title">Return to article section</a>
+		</p>
+		<h2><span id="article-edit-category"></span> — <span id="article-edit-title"></span></h2>
+		<div id="article-edit-menu">
+			<label for="article-edit-select-category" class="sr-only">Category</label>
 			<select id="article-edit-select-category"></select>
+
+			<label for="article-edit-new-title-input" class="sr-only">New title</label>
 			<input type="text" placeholder="New title" id="article-edit-new-title-input">
-			<button id="article-edit-send-modify" data-traduction="dashboard.articles.edit.update_article">Update article</button>
-        </div>
-    </div>
-    <main>
-        <section>
-            <hr>
-            <textarea id="editor" placeholder="Type your markdown here..."># Hello World
 
-This is a **live** markdown preview.
-
-## Features
-- Real-time rendering
-- Simple and clean
-- Easy to use
-
-Try typing some *markdown*!</textarea>
-        </section>
-        <section>
-            <hr>
-            <div id="preview"></div>
-        </section>
-    </main>
-    <footer></footer>
-    <script src="/public/global.js" type="module" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
-    <script src="/dashboard/articles/edit/edit.js" type="module" defer></script>
+			<button type="button" id="article-edit-send-modify"
+				data-traduction="dashboard.articles.edit.update_article">Update article</button>
+		</div>
+	</div>
+	<main>
+		<section aria-label="Markdown editor">
+			<label for="editor" class="sr-only">Markdown content</label>
+			<textarea id="editor" placeholder="Type your markdown here..."></textarea>
+		</section>
+		<section aria-label="Preview">
+			<div id="preview"></div>
+		</section>
+	</main>
+	<footer></footer>
+	<script src="/public/global.js" type="module" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+	<script src="/dashboard/articles/edit/edit.js" type="module" defer></script>
 </body>
+
 </html>

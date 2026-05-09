@@ -1,103 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil - Pastanetwork Wiki Backend</title>
-    <link rel="stylesheet" href="/public/global.css">
-    <link rel="stylesheet" href="/profil/profil.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Profil - Pastanetwork Wiki Backend</title>
+	<link rel="stylesheet" href="/public/global.css">
+	<link rel="stylesheet" href="/profil/profil.css">
 </head>
+
 <body>
-    <header class="flex-al-it-center"></header>
-    <main>
-        <div>
-            <section>
-                <h2 data-traduction="profil.profil_informations">Profil informations :</h2>
-                <table>
-                    <tbody>
-                        <tr>
-                            <th spec="col" data-traduction="profil.account.username">Username :</th>
-                            <td id="profil-username"></td>
-                        </tr>
-                        <tr>
-                            <th spec="col" data-traduction="profil.account.email">Email :</th>
-                            <td id="profil-email"></td>
-                        </tr>
-                        <tr>
-                            <th spec="col" data-traduction="profil.account.role">Role :</th>
-                            <td id="profil-role"></td>
-                        </tr>
-                        <tr>
-                            <th spec="col" data-traduction="profil.account.created">Created :</th>
-                            <td id="profil-created-at"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr>
-            </section>
-            <section>
-                <h2 data-traduction="profil.profil_edition">Profil edition:</h2>
-                <table>
-                    <tbody>
-                        <tr>
-                            <th spec="col" data-traduction="profil.edit.new_username">New username :</th>
-                            <td><input type="text" id="profil-edit-username" placeholder="pasta13680_chan"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th spec="col" data-traduction="profil.edit.new_email">New email :</th>
-                            <td><input type="text" id="profil-edit-email" placeholder="pasta13chan@email.com"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th spec="col">New password :</th>
-                            <td><input id="profil-edit-password" type="password" data-traduction="profil.edit.new_password"></td>
-                            <td><button aria-label="Show new password confirmation">Show</button></td>
-                        </tr>
-                        <tr>
-                            <th spec="col">Confirm password :</th>
-                            <td><input id="profil-edit-password-confirm" type="password" data-traduction="profil.edit.confirm_password"></td>
-                            <td><button aria-label="Show new password confirmation">Show</button></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><p id="profil-modif-log" data-traduction="profil.edit.log">You will see the log here.</p></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><button id="send-profil-modif" data-traduction="profil.edit.confirm">Confirm changes</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr>
-            </section>
-            <section>
-                <h2 data-traduction="profil.connection_logs">Connection logs :</h2>
-                <table id="connect-log-table">
-                    <thead>
-                        <tr>
-                            <th scope="col" data-traduction="profil.c_logs.email">Email Connection</th>
-                            <th scope="col" data-traduction="profil.c_logs.user_agent">User-Agent</th>
-                            <th scope="col" data-traduction="profil.c_logs.ip">IP address</th>
-                            <th scope="col" data-traduction="profil.c_logs.time">Time</th>
-                            <th scope="col" data-traduction="profil.c_logs.status">Connection Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="connect-log-tbody">
+	<header class="flex-al-it-center"></header>
+	<main>
+		<div class="profil-content">
+			<section aria-labelledby="profil-info-heading">
+				<h2 id="profil-info-heading" data-traduction="profil.profil_informations">Profil informations :</h2>
+				<table>
+					<tbody>
+						<tr>
+							<th scope="row" data-traduction="profil.account.username">Username :</th>
+							<td id="profil-username"></td>
+						</tr>
+						<tr>
+							<th scope="row" data-traduction="profil.account.email">Email :</th>
+							<td id="profil-email"></td>
+						</tr>
+						<tr>
+							<th scope="row" data-traduction="profil.account.role">Role :</th>
+							<td id="profil-role"></td>
+						</tr>
+						<tr>
+							<th scope="row" data-traduction="profil.account.created">Created :</th>
+							<td id="profil-created-at"></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
 
-                    </tbody>
-                </table>
-                <hr>
-            </section>
-            <section>
-                <h2 data-traduction="profil.miscellaneous">Miscellaneous :</h2>
-                <button id="disconnect-user" data-traduction="profil.disconnect">Disconnect</button>
-                <hr>
-            </section>
-        </div>
+			<section aria-labelledby="profil-edit-heading">
+				<h2 id="profil-edit-heading" data-traduction="profil.profil_edition">Profil edition :</h2>
+				<table>
+					<tbody>
+						<tr>
+							<th scope="row"><label for="profil-edit-username"
+									data-traduction="profil.edit.new_username">New username :</label></th>
+							<td><input type="text" id="profil-edit-username" placeholder="pasta13680_chan"
+									autocomplete="username"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="profil-edit-email" data-traduction="profil.edit.new_email">New
+									email :</label></th>
+							<td><input type="email" id="profil-edit-email" placeholder="pasta13chan@email.com"
+									autocomplete="email"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="profil-edit-password"
+									data-traduction="profil.edit.new_password">New password :</label></th>
+							<td><input id="profil-edit-password" type="password" autocomplete="new-password"></td>
+							<td><button type="button" class="toggle-password-btn" data-target="profil-edit-password"
+									aria-label="Show password">Show</button></td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="profil-edit-password-confirm"
+									data-traduction="profil.edit.confirm_password">Confirm password :</label></th>
+							<td><input id="profil-edit-password-confirm" type="password" autocomplete="new-password">
+							</td>
+							<td><button type="button" class="toggle-password-btn"
+									data-target="profil-edit-password-confirm"
+									aria-label="Show password confirmation">Show</button></td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<p id="profil-modif-log" role="status" aria-live="polite"
+									data-traduction="profil.edit.log">You will see the log here.</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3"><button type="button" id="send-profil-modif"
+									data-traduction="profil.edit.confirm">Confirm changes</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
 
-    </main>
-    <footer></footer>
-    <div id="profil-modif-confirm" data-opened="false"></div>
-    <script src="/public/global.js" type="module" defer></script>
-    <script src="/profil/profil.js" type="module" defer></script>
+			<section aria-labelledby="profil-logs-heading">
+				<h2 id="profil-logs-heading" data-traduction="profil.connection_logs">Connection logs :</h2>
+				<div class="table-responsive">
+					<table id="connect-log-table">
+						<thead>
+							<tr>
+								<th scope="col" data-traduction="profil.c_logs.email">Email Connection</th>
+								<th scope="col" data-traduction="profil.c_logs.user_agent">User-Agent</th>
+								<th scope="col" data-traduction="profil.c_logs.ip">IP address</th>
+								<th scope="col" data-traduction="profil.c_logs.time">Time</th>
+								<th scope="col" data-traduction="profil.c_logs.status">Connection Status</th>
+							</tr>
+						</thead>
+						<tbody id="connect-log-tbody"></tbody>
+					</table>
+				</div>
+			</section>
+
+			<section aria-labelledby="profil-misc-heading">
+				<h2 id="profil-misc-heading" data-traduction="profil.miscellaneous">Miscellaneous :</h2><br>
+				<button type="button" id="disconnect-user" data-traduction="profil.disconnect">Disconnect</button>
+			</section>
+		</div>
+	</main>
+	<footer></footer>
+	<div id="profil-modif-confirm" data-opened="false" role="alertdialog" aria-modal="true"
+		aria-labelledby="profil-alert-title"></div>
+	<script src="/public/global.js" type="module" defer></script>
+	<script src="/profil/profil.js" type="module" defer></script>
 </body>
+
 </html>

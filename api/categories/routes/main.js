@@ -89,7 +89,6 @@ router.put("/delete", async (req,res)=>{
 router.get("/get-langs",async (req,res)=>{
     const category = new Category();
     let res_log = await category.getLangs();
-    console.log(res_log)
     res.status(res_log.code).json({data:res_log.msg});
 });
  

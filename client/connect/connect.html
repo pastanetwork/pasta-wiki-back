@@ -1,51 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect - Pastanetwork Wiki Manager</title>
-    <link rel="stylesheet" href="/public/global.css">
-    <link rel="stylesheet" href="/connect/connect.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Connect - Pastanetwork Wiki Manager</title>
+	<link rel="stylesheet" href="/public/global.css">
+	<link rel="stylesheet" href="/connect/connect.css">
 </head>
+
 <body>
 	<header class="flex-al-it-center"></header>
 	<main>
-		<div id="connect-form">
+		<form id="connect-form" novalidate>
 			<h2 id="connect-title" data-traduction="connect.login">Login</h2>
 			<fieldset>
-				
-				<label for="username" id="username-label" data-traduction="connect.input.username">Username</label><br/>
-				<input id="username" name="username" type="text" required/><br/>
-				
-				<label for="email" id="email-label" data-traduction="connect.input.email">Email</label><br/>
-				<input id="email" name="email" type="email" required/><br/>
-				
-				<label for="password" data-traduction="connect.input.password">Password</label><br/>
-				<input id="password" name="password" type="password" required/><br/>
-				
-				<label for="password-confirm" id="password-confirm-label" data-traduction="connect.input.confirm_password">Confirm password</label><br/>
-				<input id="password-confirm" name="password-confirm" type="password" required/><br/>
-				
-				<button id="connect-send" data-traduction="connect.input.send">Send</button>
-				
-				<p id="connect-log"></p>
-				
-			</fieldset>
-			<p id="switch-login-register-label" data-traduction="connect.switch-to-register"></p>
-			<button id="switch-login-register" data-traduction="connect.switch-to-register.link">Register</button>
-		</div>
+				<legend id="connect-legend" class="sr-only" data-traduction="connect.login">Login</legend>
 
-		<div id="two-factor-auth-form">
+				<div class="form-group" id="username-group">
+					<label for="username" id="username-label" data-traduction="connect.input.username">Username</label>
+					<input id="username" name="username" type="text" autocomplete="username" required />
+				</div>
+
+				<div class="form-group">
+					<label for="email" id="email-label" data-traduction="connect.input.email">Email</label>
+					<input id="email" name="email" type="email" autocomplete="email" required />
+				</div>
+
+				<div class="form-group">
+					<label for="password" id="password-label" data-traduction="connect.input.password">Password</label>
+					<input id="password" name="password" type="password" autocomplete="current-password" required />
+				</div>
+
+				<div class="form-group" id="password-confirm-group">
+					<label for="password-confirm" id="password-confirm-label"
+						data-traduction="connect.input.confirm_password">Confirm password</label>
+					<input id="password-confirm" name="password-confirm" type="password" autocomplete="new-password"
+						required />
+				</div>
+
+				<button type="submit" id="connect-send" data-traduction="connect.input.send">Send</button>
+
+				<p id="connect-log" role="status" aria-live="polite"></p>
+			</fieldset>
+
+			<div class="switch-section">
+				<p id="switch-login-register-label" data-traduction="connect.switch-to-register"></p>
+				<button type="button" id="switch-login-register"
+					data-traduction="connect.switch-to-register.link">Register</button>
+			</div>
+		</form>
+
+		<div id="two-factor-auth-form" role="region" aria-labelledby="tfa-title">
 			<h2 id="tfa-title" data-traduction="connect.2fa">2FA Verification</h2>
 			<fieldset id="two-factor-auth-fieldset">
+				<legend class="sr-only" data-traduction="connect.2fa">2FA Verification</legend>
 				<div id="two-factor-auth-inputs">
-					<input id="two-factor-input-code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="123456">
-					<button id="two-factor-send-code" data-traduction="connect.input.send">Send</button>
-					<p id="two-factor-auth-log"></p>
+					<label for="two-factor-input-code" class="sr-only" data-traduction="connect.2fa.label">Verification
+						code</label>
+					<input id="two-factor-input-code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+						placeholder="123456" autocomplete="one-time-code" aria-describedby="two-factor-auth-log" />
+					<button type="button" id="two-factor-send-code" data-traduction="connect.input.send">Send</button>
+					<p id="two-factor-auth-log" role="status" aria-live="polite"></p>
 				</div>
-				<div id="two-factor-qrcode-holder">
-
-				</div>
+				<div id="two-factor-qrcode-holder" aria-label="QR Code for 2FA setup"></div>
 			</fieldset>
 		</div>
 	</main>
@@ -53,4 +71,5 @@
 	<script src="/public/global.js" type="module" defer></script>
 	<script src="/connect/connect.js" type="module" defer></script>
 </body>
+
 </html>
